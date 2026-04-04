@@ -216,40 +216,8 @@ pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name Blu
 
 如果你准备公开放到 GitHub，这个许可足够常见，也比较适合这种桌面效率工具。
 
-## 建议的 GitHub 仓库名
 
-我依然最推荐：
-
-```text
-wukuang
-```
-
-也可以考虑：
-
-- `wukuang-blur-tool`
-- `fog-box`
-- `image-blur-workbench`
-
-## 上传到 GitHub
-
-假设你的仓库地址是：
-
-```text
-https://github.com/你的用户名/wukuang.git
-```
-
-那在当前目录里执行：
-
-```powershell
-git init
-git add .
-git commit -m "feat: initial release of 雾框"
-git branch -M main
-git remote add origin https://github.com/你的用户名/wukuang.git
-git push -u origin main
-```
-
-## 后续还可以继续升级
+## 后续升级
 
 - 自动人脸检测后先预打码
 - 马赛克模式
