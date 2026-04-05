@@ -611,6 +611,9 @@ class MainWindow(QMainWindow):
         self.image_paths: list[Path] = []
         self.current_index = -1
         self.folder: Path | None = None
+        self.parent_folder: Path | None = None
+        self.sibling_folders: list[Path] = []
+        self.current_folder_index = -1
         self.current_source_path: Path | None = None
         self.current_full_image: Image.Image | None = None
         self.undo_stack: list[Image.Image] = []
@@ -645,6 +648,7 @@ class MainWindow(QMainWindow):
         self._bind_actions()
         self._apply_theme()
         self._update_ui_labels()
+        QTimer.singleShot(0, self._sync_sidebar_width)
         QTimer.singleShot(80, lambda: enable_windows_titlebar(int(self.winId()), self.settings["theme_mode"] == "dark"))
 
     def _build_ui(self) -> None:
@@ -656,8 +660,9 @@ class MainWindow(QMainWindow):
         shell.setSpacing(0)
 
         sidebar_host = QWidget()
+        self.sidebar_host = sidebar_host
         sidebar_host.setObjectName("sidebarHost")
-        sidebar_host.setFixedWidth(344)
+        sidebar_host.setFixedWidth(372)
         sidebar_shell = QVBoxLayout(sidebar_host)
         sidebar_shell.setContentsMargins(0, 0, 0, 0)
         sidebar_shell.setSpacing(0)
@@ -671,6 +676,7 @@ class MainWindow(QMainWindow):
         shell.addWidget(sidebar_host)
 
         sidebar_body = QWidget()
+        self.sidebar_body = sidebar_body
         sidebar_body.setMinimumWidth(0)
         sidebar_body.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         self.sidebar_scroll.setWidget(sidebar_body)
@@ -707,12 +713,23 @@ class MainWindow(QMainWindow):
         self.choose_button.setObjectName("primary")
         self.rechoose_button = QPushButton("重新选择")
         self.rechoose_button.setObjectName("secondary")
+        self.prev_folder_button = QPushButton("上一文件夹")
+        self.prev_folder_button.setObjectName("secondary")
+        self.prev_folder_button.setEnabled(False)
+        self.next_folder_button = QPushButton("下一文件夹")
+        self.next_folder_button.setObjectName("secondary")
+        self.next_folder_button.setEnabled(False)
         action_layout.addWidget(self.choose_button)
         action_layout.addWidget(self.rechoose_button)
+        action_layout.addWidget(self.prev_folder_button)
+        action_layout.addWidget(self.next_folder_button)
         self.sidebar_folder = QLabel("尚未选择目录")
         self.sidebar_folder.setObjectName("folderLine")
         self.sidebar_folder.setWordWrap(True)
         action_layout.addWidget(self.sidebar_folder)
+        self.folder_nav_label = QLabel("母目录进度: -")
+        self.folder_nav_label.setObjectName("hint")
+        action_layout.addWidget(self.folder_nav_label)
         info_strip = QHBoxLayout()
         self.count_label = QLabel("0 / 0")
         self.count_label.setObjectName("count")
@@ -785,11 +802,13 @@ class MainWindow(QMainWindow):
         shortcut_layout.setContentsMargins(12, 12, 12, 12)
         shortcut_layout.setSpacing(6)
         shortcut_layout.addWidget(QLabel("快捷操作", objectName="sectionTitle"))
-        keys = QLabel("A / D 切图   Ctrl+Z 撤销   R 重新载入")
+        keys = QLabel("A / D 切图   Shift+A / Shift+D 切文件夹")
         keys.setObjectName("body")
+        keys.setWordWrap(True)
         shortcut_layout.addWidget(keys)
-        hint = QLabel("长按 A 或 D 可以连续快速浏览整个文件夹。")
+        hint = QLabel("Ctrl+Z 撤销，R 重新载入，长按 A 或 D 可连续浏览图片。")
         hint.setObjectName("hint")
+        hint.setWordWrap(True)
         shortcut_layout.addWidget(hint)
         sidebar.addWidget(shortcut)
         sidebar.addStretch(1)
@@ -852,6 +871,8 @@ class MainWindow(QMainWindow):
     def _bind_actions(self) -> None:
         self.choose_button.clicked.connect(self.choose_folder)
         self.rechoose_button.clicked.connect(self.choose_folder)
+        self.prev_folder_button.clicked.connect(self.prev_folder)
+        self.next_folder_button.clicked.connect(self.next_folder)
         self.prev_button.clicked.connect(self.prev_image)
         self.next_button.clicked.connect(self.next_image)
         self.settings_button.clicked.connect(self.open_settings)
@@ -881,6 +902,19 @@ class MainWindow(QMainWindow):
         layout.addWidget(label)
         layout.addWidget(control)
         return row
+
+    def _sync_sidebar_width(self) -> None:
+        if not hasattr(self, "sidebar_scroll") or not hasattr(self, "sidebar_body"):
+            return
+        viewport_width = self.sidebar_scroll.viewport().width()
+        if viewport_width <= 0:
+            return
+        # Keep the scroll content locked to the visible viewport so controls never spill horizontally.
+        self.sidebar_body.setFixedWidth(max(0, viewport_width - 1))
+
+    def resizeEvent(self, event) -> None:
+        super().resizeEvent(event)
+        self._sync_sidebar_width()
 
     def _stylesheet(self) -> str:
         c = self.theme
@@ -1158,6 +1192,12 @@ class MainWindow(QMainWindow):
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.isAutoRepeat():
             return
+        if (event.modifiers() & Qt.KeyboardModifier.ShiftModifier) and event.key() == Qt.Key.Key_D:
+            self.next_folder()
+            return
+        if (event.modifiers() & Qt.KeyboardModifier.ShiftModifier) and event.key() == Qt.Key.Key_A:
+            self.prev_folder()
+            return
         if event.key() == Qt.Key.Key_D:
             self.next_image()
             self.flip_direction = 1
@@ -1204,17 +1244,80 @@ class MainWindow(QMainWindow):
             return
         if not folder:
             return
-        directory = Path(folder)
-        self.image_paths = sorted([path for path in directory.iterdir() if path.suffix.lower() in SUPPORTED_EXTENSIONS])
-        if not self.image_paths:
-            self.set_status("这个文件夹里没有可处理的图片。")
+        self.load_folder(Path(folder))
+
+    def _sorted_image_paths(self, directory: Path) -> list[Path]:
+        return sorted(
+            [path for path in directory.iterdir() if path.is_file() and path.suffix.lower() in SUPPORTED_EXTENSIONS],
+            key=lambda path: path.name.casefold(),
+        )
+
+    def _sorted_child_folders(self, parent: Path) -> list[Path]:
+        folders: list[Path] = []
+        for child in sorted((path for path in parent.iterdir() if path.is_dir()), key=lambda path: path.name.casefold()):
+            try:
+                if any(item.is_file() and item.suffix.lower() in SUPPORTED_EXTENSIONS for item in child.iterdir()):
+                    folders.append(child)
+            except OSError:
+                continue
+        return folders
+
+    def _update_folder_navigation_state(self) -> None:
+        if self.folder is None or not self.sibling_folders or self.current_folder_index < 0:
+            self.folder_nav_label.setText("母目录进度: -")
+            self.prev_folder_button.setEnabled(False)
+            self.next_folder_button.setEnabled(False)
             return
+        self.folder_nav_label.setText(f"母目录进度: {self.current_folder_index + 1} / {len(self.sibling_folders)}")
+        self.prev_folder_button.setEnabled(self.current_folder_index > 0)
+        self.next_folder_button.setEnabled(self.current_folder_index < len(self.sibling_folders) - 1)
+
+    def load_folder(self, directory: Path) -> bool:
+        try:
+            image_paths = self._sorted_image_paths(directory)
+        except OSError as exc:
+            self.set_status(f"读取文件夹失败：{exc}", kind="error", transient_ms=1800)
+            return False
+        if not image_paths:
+            self.set_status("这个文件夹里没有可处理的图片。", kind="warning", transient_ms=1600)
+            return False
+
+        self.image_paths = image_paths
         self.folder = directory
+        self.parent_folder = directory.parent if directory.parent != directory else None
+        self.sibling_folders = self._sorted_child_folders(self.parent_folder) if self.parent_folder else []
+        self.current_folder_index = self.sibling_folders.index(directory) if directory in self.sibling_folders else -1
         self.folder_pill.setText(f"📂 {directory.name}")
         self.folder_pill.setToolTip(str(directory))
         self.sidebar_folder.setText(str(directory))
+        self._update_folder_navigation_state()
         self.show_image(0, force=True)
-        self.set_status(f"已载入 {len(self.image_paths)} 张图片。")
+        self.set_status(f"已载入 {len(self.image_paths)} 张图片。", kind="success", transient_ms=1200)
+        return True
+
+    def next_folder(self) -> None:
+        if self.folder is None or not self.sibling_folders or self.current_folder_index < 0:
+            self.set_status("当前目录不在可连续切换的母目录结构中。", kind="warning", transient_ms=1600)
+            return
+        next_index = self.current_folder_index + 1
+        if next_index >= len(self.sibling_folders):
+            self.set_status("已经是母目录里的最后一个子文件夹。", kind="warning", transient_ms=1600)
+            return
+        next_directory = self.sibling_folders[next_index]
+        if self.load_folder(next_directory):
+            self.set_status(f"已切换到下一个文件夹：{next_directory.name}", kind="success", transient_ms=1500)
+
+    def prev_folder(self) -> None:
+        if self.folder is None or not self.sibling_folders or self.current_folder_index < 0:
+            self.set_status("当前目录不在可连续切换的母目录结构中。", kind="warning", transient_ms=1600)
+            return
+        prev_index = self.current_folder_index - 1
+        if prev_index < 0:
+            self.set_status("已经是母目录里的第一个子文件夹。", kind="warning", transient_ms=1600)
+            return
+        prev_directory = self.sibling_folders[prev_index]
+        if self.load_folder(prev_directory):
+            self.set_status(f"已切换到上一个文件夹：{prev_directory.name}", kind="success", transient_ms=1500)
 
     def preferred_path(self, source: Path) -> Path:
         if self.settings["save_mode"] == "overwrite":
@@ -1542,5 +1645,5 @@ def main() -> None:
     if icon_path.exists():
         app.setWindowIcon(QIcon(str(icon_path)))
     window = MainWindow()
-    window.show()
+    window.showMaximized()
     app.exec()

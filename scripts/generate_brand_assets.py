@@ -69,17 +69,11 @@ def build_icon(size: int = 1024) -> Image.Image:
     image = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     radius = int(size * 0.24)
 
-    glow = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    gd.ellipse((int(size * 0.18), int(size * 0.18), int(size * 0.82), int(size * 0.82)), fill=(77, 140, 255, 96))
-    glow = glow.filter(ImageFilter.GaussianBlur(radius=size // 10))
-    image.alpha_composite(glow)
-
     tile = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     td = ImageDraw.Draw(tile)
-    tile_box = (int(size * 0.15), int(size * 0.15), int(size * 0.85), int(size * 0.85))
+    tile_box = (int(size * 0.18), int(size * 0.18), int(size * 0.82), int(size * 0.82))
     td.rounded_rectangle(tile_box, radius=radius, fill=(16, 32, 56, 255))
-    td.rounded_rectangle(tile_box, radius=radius, outline=(97, 137, 194, 110), width=max(4, size // 170))
+    td.rounded_rectangle(tile_box, radius=radius, outline=(97, 137, 194, 118), width=max(4, size // 170))
 
     screen_box = (int(size * 0.28), int(size * 0.25), int(size * 0.72), int(size * 0.58))
     td.rounded_rectangle(screen_box, radius=int(size * 0.08), fill=(31, 58, 92, 255), outline=(124, 170, 240, 220), width=max(8, size // 64))
