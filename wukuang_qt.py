@@ -714,6 +714,7 @@ class MainWindow(QMainWindow):
         self.parent_folder: Path | None = None
         self.sibling_folders: list[Path] = []
         self.current_folder_index = -1
+        self._folder_progress_counted = False
         self.current_source_path: Path | None = None
         self.current_full_image: Image.Image | None = None
         self.undo_stack: list[Image.Image] = []
@@ -830,6 +831,10 @@ class MainWindow(QMainWindow):
         self.folder_nav_label = QLabel("母目录进度: -")
         self.folder_nav_label.setObjectName("hint")
         action_layout.addWidget(self.folder_nav_label)
+        self.count_parent_progress_button = QPushButton("统计母目录进度")
+        self.count_parent_progress_button.setObjectName("secondary")
+        self.count_parent_progress_button.setEnabled(False)
+        action_layout.addWidget(self.count_parent_progress_button)
         info_strip = QHBoxLayout()
         self.count_label = QLabel("0 / 0")
         self.count_label.setObjectName("count")
@@ -1006,6 +1011,7 @@ class MainWindow(QMainWindow):
         self.rechoose_button.clicked.connect(self.choose_folder)
         self.prev_folder_button.clicked.connect(self.prev_folder)
         self.next_folder_button.clicked.connect(self.next_folder)
+        self.count_parent_progress_button.clicked.connect(self.count_parent_progress)
         self.prev_button.clicked.connect(self.prev_image)
         self.next_button.clicked.connect(self.next_image)
         self.settings_button.clicked.connect(self.open_settings)
@@ -1446,30 +1452,59 @@ class MainWindow(QMainWindow):
         self.load_folder(Path(folder))
 
     def _sorted_image_paths(self, directory: Path) -> list[Path]:
-        return sorted(
-            [path for path in directory.iterdir() if path.is_file() and path.suffix.lower() in SUPPORTED_EXTENSIONS],
-            key=lambda path: path.name.casefold(),
-        )
+        with os.scandir(directory) as iterator:
+            paths = [
+                Path(entry.path)
+                for entry in iterator
+                if entry.is_file() and Path(entry.name).suffix.lower() in SUPPORTED_EXTENSIONS
+            ]
+        return sorted(paths, key=lambda path: path.name.casefold())
 
-    def _sorted_child_folders(self, parent: Path) -> list[Path]:
-        folders: list[Path] = []
-        for child in sorted((path for path in parent.iterdir() if path.is_dir()), key=lambda path: path.name.casefold()):
-            try:
-                if any(item.is_file() and item.suffix.lower() in SUPPORTED_EXTENSIONS for item in child.iterdir()):
-                    folders.append(child)
-            except OSError:
-                continue
-        return folders
+    def _ensure_sibling_folders_loaded(self) -> None:
+        if self.folder is None or self.parent_folder is None:
+            self.sibling_folders = []
+            self.current_folder_index = -1
+            return
+        if self.sibling_folders and 0 <= self.current_folder_index < len(self.sibling_folders):
+            return
+        try:
+            with os.scandir(self.parent_folder) as iterator:
+                self.sibling_folders = sorted(
+                    [Path(entry.path) for entry in iterator if entry.is_dir()],
+                    key=lambda path: path.name.casefold(),
+                )
+        except OSError:
+            self.sibling_folders = []
+        self.current_folder_index = self.sibling_folders.index(self.folder) if self.folder in self.sibling_folders else -1
 
     def _update_folder_navigation_state(self) -> None:
-        if self.folder is None or not self.sibling_folders or self.current_folder_index < 0:
+        if self.folder is None:
             self.folder_nav_label.setText("母目录进度: -")
+            self.count_parent_progress_button.setEnabled(False)
             self.prev_folder_button.setEnabled(False)
             self.next_folder_button.setEnabled(False)
             return
-        self.folder_nav_label.setText(f"母目录进度: {self.current_folder_index + 1} / {len(self.sibling_folders)}")
+        self._ensure_sibling_folders_loaded()
+        self.count_parent_progress_button.setEnabled(self.parent_folder is not None)
+        if not self._folder_progress_counted:
+            self.folder_nav_label.setText("母目录进度: 未统计")
+        elif not self.sibling_folders or self.current_folder_index < 0:
+            self.folder_nav_label.setText("母目录进度: -")
+        else:
+            self.folder_nav_label.setText(f"母目录进度: {self.current_folder_index + 1} / {len(self.sibling_folders)}")
         self.prev_folder_button.setEnabled(self.current_folder_index > 0)
-        self.next_folder_button.setEnabled(self.current_folder_index < len(self.sibling_folders) - 1)
+        self.next_folder_button.setEnabled(
+            bool(self.sibling_folders) and self.current_folder_index >= 0 and self.current_folder_index < len(self.sibling_folders) - 1
+        )
+
+    def count_parent_progress(self) -> None:
+        if self.folder is None or self.parent_folder is None:
+            self.set_status("当前目录没有可统计的母目录。", kind="warning", transient_ms=1500)
+            return
+        self._ensure_sibling_folders_loaded()
+        self._folder_progress_counted = True
+        self._update_folder_navigation_state()
+        self.set_status("已统计母目录进度。", kind="success", transient_ms=1200)
 
     def load_folder(self, directory: Path) -> bool:
         try:
@@ -1484,8 +1519,9 @@ class MainWindow(QMainWindow):
         self.image_paths = image_paths
         self.folder = directory
         self.parent_folder = directory.parent if directory.parent != directory else None
-        self.sibling_folders = self._sorted_child_folders(self.parent_folder) if self.parent_folder else []
-        self.current_folder_index = self.sibling_folders.index(directory) if directory in self.sibling_folders else -1
+        self.sibling_folders = []
+        self.current_folder_index = -1
+        self._folder_progress_counted = False
         self.folder_pill.setText(f"📂 {directory.name}")
         self.folder_pill.setToolTip(str(directory))
         self.sidebar_folder.setText(str(directory))
@@ -1495,6 +1531,7 @@ class MainWindow(QMainWindow):
         return True
 
     def next_folder(self) -> None:
+        self._ensure_sibling_folders_loaded()
         if self.folder is None or not self.sibling_folders or self.current_folder_index < 0:
             self.set_status("当前目录不在可连续切换的母目录结构中。", kind="warning", transient_ms=1600)
             return
@@ -1504,9 +1541,11 @@ class MainWindow(QMainWindow):
             return
         next_directory = self.sibling_folders[next_index]
         if self.load_folder(next_directory):
+            self.current_folder_index = next_index
             self.set_status(f"已切换到下一个文件夹：{next_directory.name}", kind="success", transient_ms=1500)
 
     def prev_folder(self) -> None:
+        self._ensure_sibling_folders_loaded()
         if self.folder is None or not self.sibling_folders or self.current_folder_index < 0:
             self.set_status("当前目录不在可连续切换的母目录结构中。", kind="warning", transient_ms=1600)
             return
@@ -1516,6 +1555,7 @@ class MainWindow(QMainWindow):
             return
         prev_directory = self.sibling_folders[prev_index]
         if self.load_folder(prev_directory):
+            self.current_folder_index = prev_index
             self.set_status(f"已切换到上一个文件夹：{prev_directory.name}", kind="success", transient_ms=1500)
 
     def preferred_path(self, source: Path) -> Path:
