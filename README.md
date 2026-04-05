@@ -173,7 +173,7 @@ pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name Blu
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
-│                     雾框 Wukuang                       │
+│                     雾框 Wukuang                        │
 │                                                         │
 │  ┌──────────────────┐         ┌──────────────────────┐  │
 │  │   PySide6 UI     │         │   Image Pipeline     │  │
