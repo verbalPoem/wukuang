@@ -47,7 +47,6 @@
 ## 功能特性
 
 <p align="center">
-  <img src="assets/app-preview.png" alt="主界面预览" width="48%">
   <img src="assets/release-cover.png" alt="发布封面预览" width="48%">
 </p>
 
