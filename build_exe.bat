@@ -10,12 +10,13 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt pyinstaller
 python scripts\generate_brand_assets.py
 
-pyinstaller ^
+py -3.12 -m PyInstaller ^
   --noconfirm ^
   --clean ^
   --windowed ^
   --name BlurStudio ^
   --icon assets\app-icon.ico ^
+  --add-data "assets\app-icon.ico;assets" ^
   face_blur_studio.py
 
 echo.

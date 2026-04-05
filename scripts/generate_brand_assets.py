@@ -37,58 +37,72 @@ def make_gradient(size: int) -> Image.Image:
 
 def build_icon(size: int = 1024) -> Image.Image:
     image = make_gradient(size)
-    draw = ImageDraw.Draw(image)
-    radius = int(size * 0.22)
+    radius = int(size * 0.23)
+
+    ambient = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    ad = ImageDraw.Draw(ambient)
+    ad.ellipse((int(size * 0.14), int(size * 0.16), int(size * 0.76), int(size * 0.78)), fill=(72, 132, 255, 105))
+    ad.ellipse((int(size * 0.34), int(size * 0.22), int(size * 0.92), int(size * 0.82)), fill=(54, 225, 208, 68))
+    ambient = ambient.filter(ImageFilter.GaussianBlur(radius=size // 9))
+    image.alpha_composite(ambient)
 
     shadow = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     ImageDraw.Draw(shadow).rounded_rectangle(
-        (int(size * 0.12), int(size * 0.12), int(size * 0.88), int(size * 0.88)),
+        (int(size * 0.14), int(size * 0.12), int(size * 0.86), int(size * 0.84)),
         radius=radius,
-        fill=(0, 0, 0, 150),
+        fill=(0, 0, 0, 120),
     )
-    shadow = shadow.filter(ImageFilter.GaussianBlur(radius=size // 28))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(radius=size // 26))
     image.alpha_composite(shadow, (0, int(size * 0.02)))
 
-    panel = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    pd = ImageDraw.Draw(panel)
-    pd.rounded_rectangle(
-        (int(size * 0.12), int(size * 0.10), int(size * 0.88), int(size * 0.86)),
+    card = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    cd = ImageDraw.Draw(card)
+    cd.rounded_rectangle(
+        (int(size * 0.14), int(size * 0.10), int(size * 0.86), int(size * 0.82)),
         radius=radius,
-        fill=(11, 24, 40, 255),
+        fill=(11, 22, 37, 255),
+        outline=(94, 122, 170, 92),
+        width=max(4, size // 180),
     )
-    pd.rounded_rectangle(
-        (int(size * 0.20), int(size * 0.19), int(size * 0.80), int(size * 0.70)),
-        radius=int(size * 0.1),
-        outline=(93, 226, 185, 255),
-        width=max(10, size // 52),
-    )
-    pd.ellipse(
-        (int(size * 0.44), int(size * 0.43), int(size * 0.72), int(size * 0.71)),
-        outline=(93, 226, 185, 255),
-        width=max(10, size // 52),
-    )
-    pd.line(
-        (int(size * 0.28), int(size * 0.28), int(size * 0.46), int(size * 0.46)),
-        fill=(93, 226, 185, 255),
-        width=max(12, size // 44),
-    )
-    pd.line(
-        (int(size * 0.31), int(size * 0.58), int(size * 0.57), int(size * 0.32)),
-        fill=(46, 165, 255, 255),
-        width=max(12, size // 44),
-    )
-    image.alpha_composite(panel)
 
-    title_font = get_font(int(size * 0.16), bold=True)
-    text = "雾框"
-    bbox = draw.textbbox((0, 0), text, font=title_font)
-    text_w = bbox[2] - bbox[0]
-    draw.text(
-        ((size - text_w) / 2, size * 0.73),
-        text,
-        fill=(242, 247, 255, 255),
-        font=title_font,
+    inner = (int(size * 0.24), int(size * 0.20), int(size * 0.76), int(size * 0.62))
+    cd.rounded_rectangle(inner, radius=int(size * 0.10), outline=(121, 174, 255, 255), width=max(12, size // 44))
+
+    for x1, y1, x2, y2 in (
+        (0.27, 0.24, 0.38, 0.28),
+        (0.27, 0.24, 0.31, 0.35),
+        (0.62, 0.24, 0.73, 0.28),
+        (0.69, 0.24, 0.73, 0.35),
+        (0.27, 0.54, 0.38, 0.58),
+        (0.27, 0.47, 0.31, 0.58),
+        (0.62, 0.54, 0.73, 0.58),
+        (0.69, 0.47, 0.73, 0.58),
+    ):
+        cd.rounded_rectangle(
+            (int(size * x1), int(size * y1), int(size * x2), int(size * y2)),
+            radius=max(10, size // 90),
+            fill=(187, 216, 255, 255),
+        )
+
+    fog = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    fd = ImageDraw.Draw(fog)
+    fd.ellipse((int(size * 0.34), int(size * 0.29), int(size * 0.66), int(size * 0.58)), fill=(235, 243, 255, 228))
+    fd.rounded_rectangle(
+        (int(size * 0.30), int(size * 0.49), int(size * 0.70), int(size * 0.56)),
+        radius=int(size * 0.035),
+        fill=(80, 227, 198, 242),
     )
+    fd.ellipse((int(size * 0.43), int(size * 0.27), int(size * 0.57), int(size * 0.38)), fill=(255, 255, 255, 126))
+    fog = fog.filter(ImageFilter.GaussianBlur(radius=size // 42))
+    card.alpha_composite(fog)
+
+    bottom_font = get_font(int(size * 0.12), bold=True)
+    text = "WK"
+    bbox = cd.textbbox((0, 0), text, font=bottom_font)
+    text_w = bbox[2] - bbox[0]
+    cd.text(((size - text_w) / 2, size * 0.67), text, fill=(242, 247, 255, 210), font=bottom_font)
+
+    image.alpha_composite(card)
     return image
 
 
@@ -97,7 +111,7 @@ def build_social_preview() -> Image.Image:
     canvas = canvas.resize((1600, 900))
     draw = ImageDraw.Draw(canvas)
 
-    draw.rounded_rectangle((80, 90, 1520, 810), radius=44, fill=(11, 24, 40, 235))
+    draw.rounded_rectangle((80, 90, 1520, 810), radius=48, fill=(11, 24, 40, 235))
     icon = build_icon(420).resize((320, 320), Image.Resampling.LANCZOS)
     canvas.alpha_composite(icon, (120, 220))
 
@@ -105,9 +119,9 @@ def build_social_preview() -> Image.Image:
     sub_font = get_font(36)
     body_font = get_font(28)
     draw.text((500, 220), "雾框", fill=(247, 250, 255), font=title_font)
-    draw.text((500, 330), "Wukuang Blur Annotator", fill=(145, 180, 219), font=sub_font)
-    draw.text((500, 420), "拖拽或定点拉框，自动打码，适合批量图片处理。", fill=(214, 225, 239), font=body_font)
-    draw.text((500, 470), "支持高 DPI、更清晰显示、深浅色主题、矩形与圆形模糊。", fill=(214, 225, 239), font=body_font)
+    draw.text((500, 330), "Wukuang", fill=(145, 180, 219), font=sub_font)
+    draw.text((500, 420), "为高频批量打码设计的本地桌面工具。", fill=(214, 225, 239), font=body_font)
+    draw.text((500, 470), "拖拽或定点框选，立即模糊，适合连续浏览与快速处理。", fill=(214, 225, 239), font=body_font)
     return canvas
 
 
@@ -125,8 +139,8 @@ def build_release_cover() -> Image.Image:
     pill_font = get_font(24, bold=True)
 
     draw.text((540, 170), "雾框", fill=(245, 249, 255), font=title_font)
-    draw.text((540, 300), "Wukuang Blur Annotator", fill=(144, 180, 219), font=sub_font)
-    draw.text((540, 390), "为批量图片打码而设计的本地桌面工作台", fill=(219, 229, 240), font=body_font)
+    draw.text((540, 300), "Wukuang", fill=(144, 180, 219), font=sub_font)
+    draw.text((540, 390), "面向大量图片审核与打码流程的本地桌面工作台", fill=(219, 229, 240), font=body_font)
     draw.text((540, 445), "支持拖拽框选、定点拉框、圆形/矩形模糊、自动保存、A/D 快速切图。", fill=(219, 229, 240), font=body_font)
 
     pills = ["高 DPI 更清晰", "深浅色主题", "自动保存", "Windows EXE"]
