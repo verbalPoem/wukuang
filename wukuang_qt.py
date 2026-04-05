@@ -40,6 +40,8 @@ DEFAULT_SETTINGS = {
     "blur_style": "gaussian",
     "blur_kernel": 61,
     "corner_radius": 18,
+    "fixed_box_width": 180,
+    "fixed_box_height": 180,
     "auto_advance": False,
     "save_mode": "overwrite",
     "prefetch_span": 4,
@@ -305,6 +307,10 @@ class ImageCanvas(QWidget):
         self._shape = "rect"
         self._mode = "drag"
         self._corner_radius = 18
+        self._fixed_box_size = QSize(
+            int(DEFAULT_SETTINGS["fixed_box_width"]),
+            int(DEFAULT_SETTINGS["fixed_box_height"]),
+        )
         self._dragging = False
         self._anchor: QPoint | None = None
         self._current: QPoint | None = None
@@ -326,6 +332,10 @@ class ImageCanvas(QWidget):
 
     def set_corner_radius(self, radius: int) -> None:
         self._corner_radius = max(0, int(radius))
+        self.update()
+
+    def set_fixed_box_size(self, width: int, height: int) -> None:
+        self._fixed_box_size = QSize(max(8, int(width)), max(8, int(height)))
         self.update()
 
     def _update_display_rect(self) -> None:
@@ -351,9 +361,24 @@ class ImageCanvas(QWidget):
         super().resizeEvent(event)
 
     def _selection_rect(self) -> QRect:
+        if self._mode == "fixed" and self._current is not None:
+            return self._fixed_widget_rect(self._current)
         if self._anchor is None or self._current is None:
             return QRect()
         return QRect(self._anchor, self._current).normalized()
+
+    def _fixed_widget_rect(self, point: QPoint) -> QRect:
+        if self._image_size.isEmpty() or self._display_rect.isEmpty():
+            return QRect()
+        x_scale = self._display_rect.width() / max(1, self._image_size.width())
+        y_scale = self._display_rect.height() / max(1, self._image_size.height())
+        rect_width = max(6, int(self._fixed_box_size.width() * x_scale))
+        rect_height = max(6, int(self._fixed_box_size.height() * y_scale))
+        left = point.x() - rect_width // 2
+        top = point.y() - rect_height // 2
+        left = max(self._display_rect.left(), min(left, self._display_rect.right() - rect_width + 1))
+        top = max(self._display_rect.top(), min(top, self._display_rect.bottom() - rect_height + 1))
+        return QRect(left, top, rect_width, rect_height).intersected(self._display_rect)
 
     def _selection_update_region(self, rect: QRect) -> QRect:
         if rect.isEmpty():
@@ -375,8 +400,8 @@ class ImageCanvas(QWidget):
             painter.drawPixmap(self._display_rect, self._pixmap)
         painter.setPen(QPen(QColor(110, 128, 155, 150), 1))
         painter.drawRect(self._display_rect)
-        if self._anchor and self._current:
-            rect = self._selection_rect()
+        rect = self._selection_rect()
+        if not rect.isEmpty():
             painter.setPen(QPen(QColor(89, 140, 255), 2, Qt.PenStyle.DashLine))
             if self._shape == "circle":
                 painter.drawEllipse(rect)
@@ -408,6 +433,10 @@ class ImageCanvas(QWidget):
             self._dragging = True
             self._anchor = point
             self._current = point
+        elif self._mode == "fixed":
+            self._anchor = None
+            self._current = point
+            self._commit_selection()
         else:
             if self._anchor is None:
                 self._anchor = point
@@ -423,6 +452,10 @@ class ImageCanvas(QWidget):
             previous = self._selection_update_region(self._selection_rect())
             self._current = point
             self.update(previous.united(self._selection_update_region(self._selection_rect())))
+        elif self._mode == "fixed":
+            previous = self._selection_update_region(self._selection_rect())
+            self._current = point if self._inside_image(point) else None
+            self.update(previous.united(self._selection_update_region(self._selection_rect())))
         elif self._mode == "point" and self._anchor is not None:
             previous = self._selection_update_region(self._selection_rect())
             self._current = point
@@ -434,6 +467,14 @@ class ImageCanvas(QWidget):
             self._commit_selection()
 
     def _commit_selection(self) -> None:
+        if self._mode == "fixed":
+            if self._current is None or self._image_size.isEmpty():
+                self._current = None
+                self.update()
+                return
+            widget_rect = self._fixed_widget_rect(self._current)
+            self._emit_selection_rect(widget_rect)
+            return
         if self._anchor is None or self._current is None or self._image_size.isEmpty():
             self._anchor = None
             self._current = None
@@ -443,6 +484,9 @@ class ImageCanvas(QWidget):
         self._anchor = None
         self._current = None
         self.update()
+        self._emit_selection_rect(widget_rect)
+
+    def _emit_selection_rect(self, widget_rect: QRect) -> None:
         if widget_rect.width() < 6 or widget_rect.height() < 6:
             return
         x_ratio = self._image_size.width() / max(1, self._display_rect.width())
@@ -491,7 +535,7 @@ class SettingsDialog(QWidget):
 
         layout.addWidget(self._group_title("界面与交互"))
         self.theme_segment = self._section(layout, "界面主题", [("浅色", "light"), ("深色", "dark")], settings["theme_mode"])
-        self.draw_segment = self._section(layout, "框选方式", [("拖拽", "drag"), ("定点", "point")], settings["draw_mode"])
+        self.draw_segment = self._section(layout, "框选方式", [("拖拽", "drag"), ("定点", "point"), ("固定", "fixed")], settings["draw_mode"])
         self.shape_segment = self._section(layout, "模糊形状", [("矩形", "rect"), ("圆形", "circle")], settings["shape_mode"])
         self.save_segment = self._section(layout, "保存策略", [("覆盖原图", "overwrite"), ("单独输出", "separate")], settings["save_mode"])
         self.auto_segment = self._section(layout, "处理后自动跳图", [("关闭", False), ("开启", True)], settings["auto_advance"])
@@ -533,6 +577,40 @@ class SettingsDialog(QWidget):
         corner_layout.addLayout(corner_row)
         layout.addWidget(corner_card)
 
+        fixed_card = CardFrame()
+        fixed_layout = QVBoxLayout(fixed_card)
+        fixed_layout.setContentsMargins(16, 16, 16, 16)
+        fixed_layout.setSpacing(10)
+        fixed_layout.addWidget(self._label("固定大小框"))
+        fixed_width_row = QHBoxLayout()
+        fixed_width_row.addWidget(QLabel("宽度", objectName="miniTitle"))
+        fixed_width_row.addStretch(1)
+        self.fixed_width_value = QLabel(str(int(settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"]))))
+        self.fixed_width_value.setObjectName("valueChip")
+        fixed_width_row.addWidget(self.fixed_width_value)
+        fixed_layout.addLayout(fixed_width_row)
+        self.fixed_width_slider = QSlider(Qt.Orientation.Horizontal)
+        self.fixed_width_slider.setRange(20, 1200)
+        self.fixed_width_slider.setValue(int(settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])))
+        self.fixed_width_slider.setFixedHeight(28)
+        fixed_layout.addWidget(self.fixed_width_slider)
+        fixed_height_row = QHBoxLayout()
+        fixed_height_row.addWidget(QLabel("高度", objectName="miniTitle"))
+        fixed_height_row.addStretch(1)
+        self.fixed_height_value = QLabel(str(int(settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"]))))
+        self.fixed_height_value.setObjectName("valueChip")
+        fixed_height_row.addWidget(self.fixed_height_value)
+        fixed_layout.addLayout(fixed_height_row)
+        self.fixed_height_slider = QSlider(Qt.Orientation.Horizontal)
+        self.fixed_height_slider.setRange(20, 1200)
+        self.fixed_height_slider.setValue(int(settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])))
+        self.fixed_height_slider.setFixedHeight(28)
+        fixed_layout.addWidget(self.fixed_height_slider)
+        self.fixed_preset_segment = SegmentedControl([("64", "64"), ("96", "96"), ("128", "128"), ("自定", "custom")], "custom")
+        self.fixed_preset_segment.set_value(self._fixed_preset_value(), emit=False)
+        fixed_layout.addWidget(self.fixed_preset_segment)
+        layout.addWidget(fixed_card)
+
         layout.addWidget(self._group_title("性能"))
         prefetch_card = CardFrame()
         prefetch_layout = QVBoxLayout(prefetch_card)
@@ -553,12 +631,16 @@ class SettingsDialog(QWidget):
 
         layout.addStretch(1)
 
-        for segment in (self.theme_segment, self.draw_segment, self.shape_segment, self.blur_segment, self.save_segment, self.auto_segment):
+        for segment in (self.theme_segment, self.draw_segment, self.shape_segment, self.blur_segment, self.save_segment, self.auto_segment, self.fixed_preset_segment):
             segment.changed.connect(self._emit_change)
         self.kernel_slider.valueChanged.connect(lambda value: self.kernel_value.setText(str(value)))
         self.kernel_slider.valueChanged.connect(self._emit_change)
         self.corner_slider.valueChanged.connect(lambda value: self.corner_value.setText(str(value)))
         self.corner_slider.valueChanged.connect(self._emit_change)
+        self.fixed_width_slider.valueChanged.connect(lambda value: self.fixed_width_value.setText(str(value)))
+        self.fixed_width_slider.valueChanged.connect(self._emit_change)
+        self.fixed_height_slider.valueChanged.connect(lambda value: self.fixed_height_value.setText(str(value)))
+        self.fixed_height_slider.valueChanged.connect(self._emit_change)
         self.prefetch_slider.valueChanged.connect(lambda value: self.prefetch_value.setText(str(value)))
         self.prefetch_slider.valueChanged.connect(self._emit_change)
 
@@ -566,6 +648,13 @@ class SettingsDialog(QWidget):
         label = QLabel(text)
         label.setObjectName("sectionTitle")
         return label
+
+    def _fixed_preset_value(self) -> str:
+        width = self.fixed_width_slider.value()
+        height = self.fixed_height_slider.value()
+        if width == height and width in {64, 96, 128}:
+            return str(width)
+        return "custom"
 
     def _group_title(self, text: str) -> QLabel:
         label = QLabel(text)
@@ -584,6 +673,15 @@ class SettingsDialog(QWidget):
         return segment
 
     def _emit_change(self) -> None:
+        preset = self.fixed_preset_segment.value()
+        if preset != "custom":
+            size = int(preset)
+            if self.fixed_width_slider.value() != size:
+                self.fixed_width_slider.setValue(size)
+            if self.fixed_height_slider.value() != size:
+                self.fixed_height_slider.setValue(size)
+        else:
+            self.fixed_preset_segment.set_value(self._fixed_preset_value(), emit=False)
         if self.kernel_slider.value() % 2 == 0:
             self.kernel_slider.setValue(self.kernel_slider.value() + 1)
         self.changed.emit(
@@ -596,6 +694,8 @@ class SettingsDialog(QWidget):
                 "auto_advance": self.auto_segment.value(),
                 "blur_kernel": self.kernel_slider.value(),
                 "corner_radius": self.corner_slider.value(),
+                "fixed_box_width": self.fixed_width_slider.value(),
+                "fixed_box_height": self.fixed_height_slider.value(),
                 "prefetch_span": self.prefetch_slider.value(),
             }
         )
@@ -751,7 +851,7 @@ class MainWindow(QMainWindow):
         quick_layout.setSpacing(8)
         quick_layout.addWidget(QLabel("快速控制", objectName="sectionTitle"))
         self.theme_segment = SegmentedControl([("浅色", "light"), ("深色", "dark")], self.settings["theme_mode"])
-        self.draw_segment = SegmentedControl([("拖拽", "drag"), ("定点", "point")], self.settings["draw_mode"])
+        self.draw_segment = SegmentedControl([("拖拽", "drag"), ("定点", "point"), ("固定", "fixed")], self.settings["draw_mode"])
         self.shape_segment = SegmentedControl([("矩形", "rect"), ("圆形", "circle")], self.settings["shape_mode"])
         self.blur_segment = SegmentedControl([("高斯", "gaussian"), ("马赛克", "pixelate"), ("修复", "inpaint")], self.settings["blur_style"])
         self.blur_segment.set_tooltip_for_value("inpaint", "这种模糊方式适合去除字体")
@@ -792,6 +892,39 @@ class MainWindow(QMainWindow):
         self.corner_slider.setValue(int(self.settings.get("corner_radius", DEFAULT_SETTINGS["corner_radius"])))
         self.corner_slider.setFixedHeight(28)
         options_layout.addWidget(self.corner_slider)
+        fixed_width_row = QHBoxLayout()
+        fixed_width_row.addWidget(QLabel("固定宽度", objectName="miniTitle"))
+        fixed_width_row.addStretch(1)
+        self.fixed_width_value = QLabel(str(int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"]))))
+        self.fixed_width_value.setObjectName("valueChip")
+        fixed_width_row.addWidget(self.fixed_width_value)
+        options_layout.addLayout(fixed_width_row)
+        self.fixed_width_slider = QSlider(Qt.Orientation.Horizontal)
+        self.fixed_width_slider.setRange(20, 1200)
+        self.fixed_width_slider.setValue(int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])))
+        self.fixed_width_slider.setFixedHeight(28)
+        options_layout.addWidget(self.fixed_width_slider)
+        fixed_height_row = QHBoxLayout()
+        fixed_height_row.addWidget(QLabel("固定高度", objectName="miniTitle"))
+        fixed_height_row.addStretch(1)
+        self.fixed_height_value = QLabel(str(int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"]))))
+        self.fixed_height_value.setObjectName("valueChip")
+        fixed_height_row.addWidget(self.fixed_height_value)
+        options_layout.addLayout(fixed_height_row)
+        self.fixed_height_slider = QSlider(Qt.Orientation.Horizontal)
+        self.fixed_height_slider.setRange(20, 1200)
+        self.fixed_height_slider.setValue(int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])))
+        self.fixed_height_slider.setFixedHeight(28)
+        options_layout.addWidget(self.fixed_height_slider)
+        self.fixed_preset_segment = SegmentedControl([("64", "64"), ("96", "96"), ("128", "128"), ("自定", "custom")], "custom")
+        self.fixed_preset_segment.set_value(
+            self._fixed_preset_value(
+                int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])),
+                int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])),
+            ),
+            emit=False,
+        )
+        options_layout.addWidget(self.fixed_preset_segment)
         self.option_hint = QLabel("长按 A / D 可以连续快速翻页浏览。")
         self.option_hint.setObjectName("hint")
         options_layout.addWidget(self.option_hint)
@@ -884,6 +1017,9 @@ class MainWindow(QMainWindow):
         self.auto_segment.changed.connect(lambda value: self._apply_setting("auto_advance", value))
         self.blur_slider.valueChanged.connect(self._blur_slider_changed)
         self.corner_slider.valueChanged.connect(self._corner_slider_changed)
+        self.fixed_width_slider.valueChanged.connect(self._fixed_width_slider_changed)
+        self.fixed_height_slider.valueChanged.connect(self._fixed_height_slider_changed)
+        self.fixed_preset_segment.changed.connect(self._fixed_preset_changed)
         self.canvas.selection_committed.connect(self.apply_selection)
 
         choose_action = QAction("Choose", self)
@@ -1133,6 +1269,10 @@ class MainWindow(QMainWindow):
             self.about_window.setStyleSheet(stylesheet)
         self.canvas.set_modes(self.settings["draw_mode"], self.settings["shape_mode"])
         self.canvas.set_corner_radius(int(self.settings.get("corner_radius", DEFAULT_SETTINGS["corner_radius"])))
+        self.canvas.set_fixed_box_size(
+            int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])),
+            int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])),
+        )
         self._update_ui_labels()
         QTimer.singleShot(20, lambda: enable_windows_titlebar(int(self.winId()), self.settings["theme_mode"] == "dark"))
         if self.settings_window is not None:
@@ -1142,11 +1282,16 @@ class MainWindow(QMainWindow):
 
     def _meta_texts(self) -> tuple[str, str, str, str]:
         return (
-            "拖拽松手确认" if self.settings["draw_mode"] == "drag" else "定点两次点击",
+            "拖拽松手确认" if self.settings["draw_mode"] == "drag" else ("定点两次点击" if self.settings["draw_mode"] == "point" else "固定大小点选"),
             "矩形模糊" if self.settings["shape_mode"] == "rect" else "圆形模糊",
             "高斯模糊" if self.settings["blur_style"] == "gaussian" else ("像素马赛克" if self.settings["blur_style"] == "pixelate" else "智能修复"),
             "覆盖原图" if self.settings["save_mode"] == "overwrite" else "输出到 blurred_output",
         )
+
+    def _fixed_preset_value(self, width: int, height: int) -> str:
+        if width == height and width in {64, 96, 128}:
+            return str(width)
+        return "custom"
 
     def _update_ui_labels(self) -> None:
         self.blur_slider.blockSignals(True)
@@ -1157,6 +1302,21 @@ class MainWindow(QMainWindow):
         self.corner_slider.setValue(int(self.settings.get("corner_radius", DEFAULT_SETTINGS["corner_radius"])))
         self.corner_slider.blockSignals(False)
         self.corner_value.setText(str(self.settings.get("corner_radius", DEFAULT_SETTINGS["corner_radius"])))
+        self.fixed_width_slider.blockSignals(True)
+        self.fixed_width_slider.setValue(int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])))
+        self.fixed_width_slider.blockSignals(False)
+        self.fixed_width_value.setText(str(int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"]))))
+        self.fixed_height_slider.blockSignals(True)
+        self.fixed_height_slider.setValue(int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])))
+        self.fixed_height_slider.blockSignals(False)
+        self.fixed_height_value.setText(str(int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"]))))
+        self.fixed_preset_segment.set_value(
+            self._fixed_preset_value(
+                int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])),
+                int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])),
+            ),
+            emit=False,
+        )
         for label, text in zip(self.meta_labels, self._meta_texts(), strict=False):
             label.setText(text)
         self.theme_segment.set_value(self.settings["theme_mode"], emit=False)
@@ -1169,7 +1329,7 @@ class MainWindow(QMainWindow):
     def _apply_setting(self, key: str, value: object) -> None:
         self.settings[key] = value
         SettingsStore.save(self.settings)
-        if key in {"theme_mode", "draw_mode", "shape_mode", "corner_radius"}:
+        if key in {"theme_mode", "draw_mode", "shape_mode", "corner_radius", "fixed_box_width", "fixed_box_height"}:
             self._apply_theme()
         else:
             self._update_ui_labels()
@@ -1188,6 +1348,45 @@ class MainWindow(QMainWindow):
         self.corner_value.setText(str(value))
         self.canvas.set_corner_radius(int(value))
         SettingsStore.save(self.settings)
+
+    def _fixed_width_slider_changed(self, value: int) -> None:
+        self.settings["fixed_box_width"] = int(value)
+        self.fixed_width_value.setText(str(value))
+        self.canvas.set_fixed_box_size(
+            int(value),
+            int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])),
+        )
+        self.fixed_preset_segment.set_value(
+            self._fixed_preset_value(
+                int(value),
+                int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])),
+            ),
+            emit=False,
+        )
+        SettingsStore.save(self.settings)
+
+    def _fixed_height_slider_changed(self, value: int) -> None:
+        self.settings["fixed_box_height"] = int(value)
+        self.fixed_height_value.setText(str(value))
+        self.canvas.set_fixed_box_size(
+            int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])),
+            int(value),
+        )
+        self.fixed_preset_segment.set_value(
+            self._fixed_preset_value(
+                int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])),
+                int(value),
+            ),
+            emit=False,
+        )
+        SettingsStore.save(self.settings)
+
+    def _fixed_preset_changed(self, value: object) -> None:
+        if value == "custom":
+            return
+        size = int(value)
+        self.fixed_width_slider.setValue(size)
+        self.fixed_height_slider.setValue(size)
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.isAutoRepeat():
