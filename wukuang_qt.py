@@ -213,13 +213,8 @@ class LogoBadge(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         rect = self.rect().adjusted(3, 3, -3, -3)
-        painter.setPen(Qt.PenStyle.NoPen)
-        painter.setBrush(QColor(28, 111, 240, 26))
-        painter.drawRoundedRect(rect.adjusted(0, 4, 0, 4), 18, 18)
-        painter.setBrush(QColor(255, 255, 255, 44))
-        painter.drawRoundedRect(rect, 18, 18)
         if not self._pixmap.isNull():
-            icon_size = int(40 * self._hover_scale)
+            icon_size = int(46 * self._hover_scale)
             scaled = self._pixmap.scaled(icon_size, icon_size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             x = (self.width() - scaled.width()) // 2
             y = (self.height() - scaled.height()) // 2 - int((self._hover_scale - 1.0) * 10)

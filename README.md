@@ -47,8 +47,8 @@
 ## 功能特性
 
 <p align="center">
-  <img src="assets/app-preview.png" alt="主界面预览" width="46%">
-  <img src="assets/workflow.png" alt="工作流预览" width="46%">
+  <img src="assets/app-preview.png" alt="主界面预览" width="48%">
+  <img src="assets/release-cover.png" alt="发布封面预览" width="48%">
 </p>
 
 - **面向批量打码场景**：打开图片目录后持续处理，适合一整批数据集、截图或素材审核流程
@@ -78,7 +78,7 @@
 
 ## 界面预览
 
-![雾框 Banner](./assets/banner.png)
+![雾框 Preview](./assets/app-preview.png)
 
 ## 快速开始
 
@@ -202,13 +202,10 @@ pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name Blu
 assets/
   app-icon.ico
   app-icon.png
-  app-icon-preview.png
   app-preview.png
-  banner.png
-  workflow.png
+  release-cover.png
 scripts/
   generate_brand_assets.py
-  generate_readme_images.py
 face_blur_studio.py
 wukuang_qt.py
 build_exe.bat
