@@ -4,6 +4,10 @@
 
   <h1 align="center" style="margin-top: 0.2em;">雾框 Wukuang</h1>
 
+  <p align="center">
+    简体中文 | <a href="./README.en.md">English</a>
+  </p>
+
   [![Python][python-badge]][python-url]
   [![PySide6][pyside-badge]][pyside-url]
   [![OpenCV][opencv-badge]][opencv-url]
@@ -240,6 +244,7 @@ build_exe.bat
 requirements.txt
 LICENSE
 README.md
+README.en.md
 ```
 
 ## 已知说明
