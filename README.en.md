@@ -77,8 +77,11 @@ It is especially useful for:
 
 ## Preview
 
-<video src="./assets/app-preview.mp4" width="100%" controls>
-</video>
+<a href="./assets/app-preview.mp4">
+  <img src="./assets/app-preview-poster.png" width="100%" alt="Wukuang interface preview video">
+</a>
+
+<p align="center"><sub>Click the preview image to open the demo video</sub></p>
 
 ## Features
 
@@ -201,6 +204,7 @@ assets/
   app-icon.ico
   app-icon.png
   app-preview.mp4
+  app-preview-poster.png
   release-cover.png
   screenshot-sheet.png
 scripts/

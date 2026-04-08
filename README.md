@@ -78,8 +78,11 @@
 
 ## 界面预览
 
-<video src="./assets/app-preview.mp4" width="100%" controls>
-</video>
+<a href="./assets/app-preview.mp4">
+  <img src="./assets/app-preview-poster.png" width="100%" alt="雾框界面预览视频">
+</a>
+
+<p align="center"><sub>点击预览图可播放界面演示视频</sub></p>
 
 ## 核心能力
 
@@ -204,6 +207,7 @@ assets/
   app-icon.ico
   app-icon.png
   app-preview.mp4
+  app-preview-poster.png
   release-cover.png
   screenshot-sheet.png
 scripts/
