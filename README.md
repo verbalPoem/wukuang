@@ -78,7 +78,8 @@
 
 ## 界面预览
 
-<img src="./assets/app-preview.png" width="100%" />
+<video src="./assets/app-preview.mp4" width="100%" controls>
+</video>
 
 ## 核心能力
 
@@ -202,7 +203,7 @@ pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name Blu
 assets/
   app-icon.ico
   app-icon.png
-  app-preview.png
+  app-preview.mp4
   release-cover.png
   screenshot-sheet.png
 scripts/
@@ -247,4 +248,3 @@ LICENSE
 - 多框批量确认
 - 更完整的缩放与平移画布体验
 - 更多形状与更细粒度的快捷键自定义
-

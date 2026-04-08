@@ -77,7 +77,8 @@ It is especially useful for:
 
 ## Preview
 
-<img src="./assets/app-preview.png" width="100%" />
+<video src="./assets/app-preview.mp4" width="100%" controls>
+</video>
 
 ## Features
 
@@ -199,7 +200,7 @@ pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name Blu
 assets/
   app-icon.ico
   app-icon.png
-  app-preview.png
+  app-preview.mp4
   release-cover.png
   screenshot-sheet.png
 scripts/
@@ -244,4 +245,3 @@ This project is licensed under the [MIT License](./LICENSE).
 - multi-box batch confirmation
 - stronger zoom/pan canvas interaction
 - more shapes and shortcut customization
-
