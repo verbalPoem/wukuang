@@ -1,165 +1,173 @@
-<br />
 <div align="center">
-  <img src="assets/app-icon.png" alt="Wukuang Logo" width="120" height="120">
-
-  <h1 align="center" style="margin-top: 0.2em;">雾框 Wukuang</h1>
-
-  <p align="center">
-    简体中文 | <a href="./README.en.md">English</a>
+  <p>
+    <img alt="Wukuang" height="140px" src="./assets/app-icon.png">
   </p>
 
-  [![Python][python-badge]][python-url]
-  [![PySide6][pyside-badge]][pyside-url]
-  [![OpenCV][opencv-badge]][opencv-url]
-  [![Pillow][pillow-badge]][pillow-url]
-  [![PyInstaller][pyinstaller-badge]][pyinstaller-url]
+[简体中文](./README.md) | [English](./README.en.md)
 
-  <p align="center">
-    <h3>一个为批量图片打码而生的本地桌面工作台</h3>
-    <br />
-    <a href="https://github.com/verbalPoem/wukuang/releases"><strong>下载最新版本 &raquo;</strong></a>
-    <br />
-    <br />
-    <a href="#功能特性">功能特性</a>
-    &middot;
-    <a href="#快速开始">快速开始</a>
-    &middot;
-    <a href="#开发说明">开发说明</a>
-    &middot;
-    <a href="#已知说明">已知说明</a>
-    &middot;
-    <a href="#开源许可">开源许可</a>
-  </p>
+  <h1>雾框 Wukuang</h1>
+  <p>面向数据集去敏感、批量图片打码和人工补漏工作流的本地桌面工具</p>
 </div>
 
-<details>
-  <summary>目录</summary>
-  <ol>
-    <li><a href="#功能特性">功能特性</a></li>
-    <li><a href="#为什么做这个项目">为什么做这个项目</a></li>
-    <li><a href="#界面预览">界面预览</a></li>
-    <li><a href="#快速开始">快速开始</a></li>
-    <li><a href="#快捷键">快捷键</a></li>
-    <li><a href="#开发说明">开发说明</a></li>
-    <li><a href="#项目结构">项目结构</a></li>
-    <li><a href="#已知说明">已知说明</a></li>
-    <li><a href="#关于作者">关于作者</a></li>
-    <li><a href="#开源许可">开源许可</a></li>
-  </ol>
-</details>
-
-## 功能特性
-
 <p align="center">
-  <img src="assets/release-cover.png" alt="发布封面预览" width="48%">
+    <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+    <a href="https://github.com/verbalPoem/wukuang/releases"><img src="https://img.shields.io/github/v/release/verbalPoem/wukuang?color=ffa"></a>
+    <a href=""><img src="https://img.shields.io/badge/python-3.12+-3776AB.svg"></a>
+    <a href=""><img src="https://img.shields.io/badge/gui-PySide6-41CD52.svg"></a>
+    <a href=""><img src="https://img.shields.io/badge/os-windows-0078D6.svg"></a>
+    <a href="https://github.com/verbalPoem/wukuang/releases"><img src="https://img.shields.io/github/downloads/verbalPoem/wukuang/total?label=downloads"></a>
 </p>
 
-- **面向批量打码场景**：打开图片目录后持续处理，适合一整批数据集、截图或素材审核流程
-- **三种框选方式**：支持拖拽松手确认、定点两次点击确认，以及固定大小点选
-- **两种处理形状**：支持矩形和圆形，矩形还支持可调圆角
-- **三种处理模式**：`高斯`、`马赛克`、`修复（Inpaint）`
-- **自动保存**：支持覆盖原图，也支持输出到 `blurred_output`
-- **连续翻页**：`A / D` 切图，长按可连续快速浏览整个文件夹
-- **子文件夹连续切换**：支持按名称顺序在同级子文件夹之间快速切换，适合处理整套数据集
-- **撤销与重载**：支持 `Ctrl + Z` 撤销、`R` 重新载入当前图
-- **高分屏友好**：针对 Windows 高 DPI 显示做了适配
-- **现代桌面界面**：基于 `PySide6`，支持浅色 / 深色主题、设置面板和更统一的控件风格
-- **性能优化**：内置预览缓存、邻近图片预加载，并在打码和撤销后直接以内存图刷新画布，减少等待感
+<p align="center">
+  <a href="https://github.com/verbalPoem/wukuang/releases"><strong>下载最新版本 &raquo;</strong></a>
+  <br />
+  <br />
+  <a href="#最新更新">最新更新</a>
+  &middot;
+  <a href="#项目简介">项目简介</a>
+  &middot;
+  <a href="#核心能力">核心能力</a>
+  &middot;
+  <a href="#快速开始">快速开始</a>
+  &middot;
+  <a href="#开发说明">开发说明</a>
+</p>
 
-## v1.0.4 更新说明
+<img src="./assets/release-cover.png" width="100%" />
 
-- 优化子文件夹切换逻辑，`上一文件夹 / 下一文件夹` 现在只按上一级目录中的直接子文件夹名称顺序工作
-- 打开目录时不再为了母目录进度预扫描同级子文件夹，移动硬盘上的打开速度明显更稳定
-- 母目录进度改为手动统计，新增 `统计母目录进度` 按钮，不再影响日常切换速度
-- 修复了因母目录扫描导致的卡顿、白屏和上下一个文件夹按钮不可用问题
+## 最新更新
 
-## v1.0.3 更新说明
+### v1.0.5
 
-- 新增第三种框选方式“固定大小点选”
-- 鼠标移动到图片上时会实时显示蓝色预览框，预览框中心始终跟随鼠标
-- 点击一次即可按固定尺寸直接打码，适合连续“点一下、点一下、点一下”处理
-- 固定大小支持实时调整宽度和高度，预览框会立即同步变化
-- 新增常用预设尺寸：`64`、`96`、`128`，同时保留自定义尺寸
+- 新增中英文界面切换，支持 `🇨🇳 ZH / 🇺🇸 EN`
+- 主界面、设置弹窗、关于弹窗、状态提示支持双语切换
+- 顶部前后翻页按钮改为更明显的 emoji 风格
+- 修复鼠标长按顶部 `A / D` 按钮时无法连续快速浏览的问题
+- 优化 README 结构与展示素材，移除明显占位文案
 
-## v1.0.2 更新说明
+### v1.0.4
 
-- 新增“上一文件夹 / 下一文件夹”功能，适合在一个母目录下连续处理多个图片子文件夹
-- 子文件夹会按名称排序，可快速切换到上一个或下一个同级文件夹
-- 新增 `Shift + A / Shift + D` 快捷键，可快速切换到上一个或下一个子文件夹
-- 启动时默认最大化窗口，更适合连续处理大批量图片
-- 修复了切换子文件夹后左侧边栏内容被挤压、覆盖的问题
-- 更新了应用图标与打包资源，桌面端视觉更统一
+- 优化子文件夹切换逻辑，`上一文件夹 / 下一文件夹` 只按上一级目录中的直接子文件夹名称顺序工作
+- 打开目录时不再为了母目录进度预扫描同级子文件夹，移动硬盘场景下更稳定
+- 母目录进度改为手动统计，不再影响日常处理速度
 
-## 为什么做这个项目
+### v1.0.3
 
-`雾框` 的目标很简单：做一个真正顺手的批量图片打码工具，而不是一个功能很多但流程很重的通用修图器。
+- 新增固定大小点选模式
+- 鼠标移动时实时显示蓝色预览框
+- 新增常用尺寸预设：`64 / 96 / 128`
 
-它想解决的是这类高频工作：
+## 项目简介
 
-- 看一张图
-- 框出人脸、敏感部位、文字或隐私信息
-- 立即处理
-- 自动保存
-- 继续下一张
+`雾框 Wukuang` 是一个专门为“批量图片去敏感”设计的本地桌面工作台。
 
-整个流程尽量减少重复点击、减少额外弹窗、减少手从键盘和鼠标之间来回切换的次数。
+它的目标不是替代自动检测模型，而是服务于这样一种真实工作流：
+
+1. 先用 `YOLO` 或其他检测模型处理掉大部分敏感区域
+2. 再由人工快速补掉漏网之鱼
+3. 保持“看一张、框一下、下一张”的连续节奏
+
+它特别适合这些场景：
+
+- 数据集去敏感
+- 图片审核
+- 人脸模糊
+- 敏感区域遮挡
+- 隐私内容处理
+- 自动检测后的人工补漏
 
 ## 界面预览
 
-![雾框 Preview](./assets/app-preview.png)
+<img src="./assets/app-preview.png" width="100%" />
+
+## 核心能力
+
+- 支持三种框选方式：拖拽、定点、固定大小点选
+- 支持两种处理形状：矩形、圆形
+- 支持矩形圆角控制，预览框与实际处理结果一致
+- 支持三种处理模式：高斯、马赛克、修复（Inpaint）
+- 支持自动保存，可覆盖原图或输出到 `blurred_output`
+- 支持 `A / D` 切图、长按连续浏览、`Shift + A / Shift + D` 子文件夹切换
+- 支持 `Ctrl + Z` 撤销与 `R` 重新载入
+- 支持高 DPI 显示
+- 支持浅色 / 深色 / 中英双语界面
+
+<details>
+<summary><strong>为什么这个工具有价值</strong></summary>
+
+很多时候，真正耗时间的不是模型推理，而是模型跑完以后还要人工再补一遍。
+
+`雾框` 就是为这个环节做的：
+
+- 不追求大而全
+- 不让用户做多余操作
+- 优先保证连续处理大量图片时的节奏感
+
+</details>
+
+<details>
+<summary><strong>功能细节</strong></summary>
+
+- 拖拽松手确认
+- 定点两次点击确认
+- 固定大小单击处理
+- 蓝色预览框实时跟随
+- 子文件夹顺序切换
+- 母目录进度手动统计
+- 状态栏高亮反馈
+- 预览缓存与邻近图片预加载
+
+</details>
 
 ## 快速开始
 
-### 第一步：准备图片目录
+### 1. 准备图片目录
 
-- 把待处理图片放在同一个文件夹中
+- 把待处理图片放入同一个子文件夹
 - 支持 `jpg`、`jpeg`、`png`、`bmp`、`webp`
 
-### 第二步：打开应用并选择目录
+### 2. 打开目录
 
-- 启动 `雾框`
-- 点击左侧的“打开图片目录”
-- 选择你要处理的图片文件夹
+- 启动应用
+- 点击 `打开图片目录`
+- 选择要处理的图片文件夹
 
-### 第三步：开始打码
+### 3. 处理图片
 
-- 用鼠标框选需要处理的区域
-- 松手或第二次点击后立即执行处理
-- 按 `D` 进入下一张，按 `A` 返回上一张
-- 如果你需要连续处理固定大小区域，也可以切换到“固定大小点选”模式，直接点一下完成打码
+- 拖拽框选，或使用定点模式
+- 也可以切换到固定大小模式，连续点击完成快速打码
+- 按 `D` 下一张，按 `A` 上一张
+- 按 `Shift + D / Shift + A` 切换同级子文件夹
 
-### 第四步：根据场景切换处理方式
+### 4. 选择处理方式
 
-- `高斯`：适合人脸、身体敏感区域
-- `马赛克`：适合需要更强遮挡感的区域
-- `修复`：适合去除小块文字、水印和遮挡
-
-### 第五步：必要时撤销
-
-- 按 `Ctrl + Z` 立即撤销上一步
-- 状态栏会高亮显示“已撤销上一步”
+- `高斯`：适合人脸和一般敏感区域
+- `马赛克`：适合更强遮挡场景
+- `修复`：适合去除文字、小块水印、局部遮挡
 
 ## 快捷键
 
 | 操作 | 快捷键 |
-|------|--------|
+| :--- | :--- |
 | 上一张图片 | `A` |
 | 下一张图片 | `D` |
 | 连续快速翻页 | 长按 `A / D` |
 | 上一个子文件夹 | `Shift + A` |
 | 下一个子文件夹 | `Shift + D` |
-| 统计母目录进度 | 左侧按钮 |
 | 撤销上一步 | `Ctrl + Z` |
 | 重新载入当前图片 | `R` |
 | 打开目录 | `Ctrl + O` |
 
 ## 开发说明
 
-### 推荐环境
+### 运行环境
 
 - Windows 10 / 11
 - Python 3.12
-- 建议使用高分屏显示器时保持系统缩放正常开启
+- PySide6
+- OpenCV
+- Pillow
+- NumPy
 
 ### 从源码运行
 
@@ -167,7 +175,7 @@
 python face_blur_studio.py
 ```
 
-### 打包为 EXE
+### 构建 Windows EXE
 
 ```powershell
 build_exe.bat
@@ -183,50 +191,10 @@ python scripts\generate_brand_assets.py
 pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name BlurStudio face_blur_studio.py
 ```
 
-### 常用命令
+## 文档
 
-| 命令 | 说明 |
-|------|------|
-| `python face_blur_studio.py` | 运行桌面应用 |
-| `py -3.12 -m py_compile wukuang_qt.py` | 语法检查 |
-| `build_exe.bat` | 构建 Windows EXE |
-
-### 技术栈
-
-| 层级 | 技术 |
-|------|------|
-| 桌面 GUI | [PySide6](https://doc.qt.io/qtforpython-6/) |
-| 图像处理 | [OpenCV](https://opencv.org/) + [Pillow](https://python-pillow.org/) + [NumPy](https://numpy.org/) |
-| 系统适配 | `ctypes` |
-| 打包 | [PyInstaller](https://pyinstaller.org/) |
-| 语言 | [Python 3.12](https://www.python.org/) |
-
-### 当前架构
-
-```text
-┌─────────────────────────────────────────────────────────┐
-│                     雾框 Wukuang                        │
-│                                                         │
-│  ┌──────────────────┐         ┌──────────────────────┐  │
-│  │   PySide6 UI     │         │   Image Pipeline     │  │
-│  │                  │         │                      │  │
-│  │  Sidebar         │         │  Pillow load/save    │  │
-│  │  Settings Dialog │◄──────► │  OpenCV blur/inpaint │  │
-│  │  Canvas Preview  │         │  NumPy mask process  │  │
-│  │  Status Bar      │         │  Preview cache       │  │
-│  └──────────────────┘         └──────────────────────┘  │
-│                                                         │
-│                    Local image folders                  │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 图片保存策略
-
-- `PNG` 以无损方式保存
-- `JPEG / JPG` 以尽量高质量方式保存：
-  `quality=100`、`subsampling=0`、关闭额外优化压缩
-
-需要说明的是，`JPEG` 本身是有损格式，所以覆盖保存时无法做到严格意义上的完全无损；当前实现已经尽量避免额外画质损失。
+- [v1.0.4 开发文档](./docs/Wukuang-v1.0.4-开发文档.md)
+- [GitHub Releases](https://github.com/verbalPoem/wukuang/releases)
 
 ## 项目结构
 
@@ -236,26 +204,35 @@ assets/
   app-icon.png
   app-preview.png
   release-cover.png
+  screenshot-sheet.png
 scripts/
   generate_brand_assets.py
+docs/
+  Wukuang-v1.0.4-开发文档.md
 face_blur_studio.py
 wukuang_qt.py
 build_exe.bat
 requirements.txt
-LICENSE
 README.md
 README.en.md
+LICENSE
 ```
+
+## 技术栈
+
+- GUI：`PySide6`
+- 图像处理：`OpenCV` + `Pillow` + `NumPy`
+- 系统适配：`ctypes`
+- 打包：`PyInstaller`
+- 语言：`Python 3.12`
 
 ## 已知说明
 
-- `修复（Inpaint）` 更适合小范围文字、水印和局部遮挡，不适合大面积内容重建
-- 如果原图是 `JPEG`，覆盖保存时仍然受限于 JPEG 自身的有损格式特性
-- 非常大的原图在首次载入时仍然会有一定等待时间，但当前版本已经通过预览缓存和延迟预加载减少了大部分卡顿
+- `Inpaint` 更适合小面积修复，不适合大面积复杂内容重建
+- 如果原图本身是 `JPEG`，覆盖保存仍受其有损格式限制
+- 超大图片首次载入仍可能有等待时间，但当前已通过预览缓存和预加载减轻卡顿
 
 ## 关于作者
-
-应用内点击左上角 Logo 可以查看开发者信息。
 
 - 开发者：`cca&qyx&codex`
 - 开发目的：让批量图片打码流程更高效、更顺手，适合长时间连续处理
@@ -264,24 +241,10 @@ README.en.md
 
 本项目使用 [MIT License](./LICENSE)。
 
-如果你准备公开放到 GitHub，这个许可足够常见，也比较适合这种桌面效率工具。
+## 后续规划
 
-## 后续升级
-
-- 自动人脸检测后先预打码
+- 模型联动的预打码工作流
 - 多框批量确认
-- 缩放和平移画布
-- 形状继续扩展成多边形
-- 快捷键自定义
-- 更完整的项目设置页
+- 更完整的缩放与平移画布体验
+- 更多形状与更细粒度的快捷键自定义
 
-[python-badge]: https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white
-[python-url]: https://www.python.org/
-[pyside-badge]: https://img.shields.io/badge/PySide6-Qt_for_Python-41CD52?style=for-the-badge&logo=qt&logoColor=white
-[pyside-url]: https://doc.qt.io/qtforpython-6/
-[opencv-badge]: https://img.shields.io/badge/OpenCV-Image_Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white
-[opencv-url]: https://opencv.org/
-[pillow-badge]: https://img.shields.io/badge/Pillow-Image_IO-8CAAE6?style=for-the-badge
-[pillow-url]: https://python-pillow.org/
-[pyinstaller-badge]: https://img.shields.io/badge/PyInstaller-Windows_EXE-EE4C2C?style=for-the-badge
-[pyinstaller-url]: https://pyinstaller.org/

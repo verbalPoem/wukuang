@@ -35,6 +35,7 @@ APP_TITLE = "雾框"
 SETTINGS_PATH = Path(os.getenv("APPDATA", Path.home())) / "Wukuang" / "settings.json"
 DEFAULT_SETTINGS = {
     "theme_mode": "light",
+    "ui_language": "zh",
     "draw_mode": "drag",
     "shape_mode": "rect",
     "blur_style": "gaussian",
@@ -46,6 +47,205 @@ DEFAULT_SETTINGS = {
     "save_mode": "overwrite",
     "prefetch_span": 4,
 }
+
+I18N = {
+    "zh": {
+        "app_title": "雾框",
+        "tagline": "一个为批量图片打码而生的本地桌面工作台",
+        "dir_progress_title": "目录与进度",
+        "open_folder": "打开图片目录",
+        "rechoose_folder": "重新选择",
+        "prev_folder": "上一文件夹",
+        "next_folder": "下一文件夹",
+        "parent_progress_unknown": "母目录进度: 未统计",
+        "parent_progress_none": "母目录进度: -",
+        "count_parent_progress": "统计母目录进度",
+        "folder_not_selected": "尚未选择目录",
+        "current_file": "当前文件: {name}",
+        "not_started": "未开始",
+        "quick_controls": "快速控制",
+        "processing_options": "处理选项",
+        "shortcuts_title": "快捷操作",
+        "shortcuts_keys": "A / D 切图   Shift+A / Shift+D 切文件夹",
+        "shortcuts_hint": "Ctrl+Z 撤销，R 重新载入，长按 A 或 D 可连续浏览图片。",
+        "theme": "主题",
+        "language": "语言",
+        "draw_mode": "框选方式",
+        "shape_mode": "模糊形状",
+        "blur_style": "模糊样式",
+        "save_mode": "保存策略",
+        "auto_advance": "自动跳图",
+        "blur_strength": "模糊强度",
+        "corner_radius": "矩形圆角",
+        "fixed_width": "固定宽度",
+        "fixed_height": "固定高度",
+        "option_hint": "长按 A / D 可以连续快速翻页浏览。",
+        "folder_placeholder": "尚未选择文件夹",
+        "status_ready": "选择一个图片文件夹开始。",
+        "draw_drag": "拖拽",
+        "draw_point": "定点",
+        "draw_fixed": "固定",
+        "draw_drag_meta": "拖拽松手确认",
+        "draw_point_meta": "定点两次点击",
+        "draw_fixed_meta": "固定大小点选",
+        "shape_rect": "矩形",
+        "shape_circle": "圆形",
+        "shape_rect_meta": "矩形模糊",
+        "shape_circle_meta": "圆形模糊",
+        "blur_gaussian": "高斯",
+        "blur_pixelate": "马赛克",
+        "blur_inpaint": "修复",
+        "blur_gaussian_meta": "高斯模糊",
+        "blur_pixelate_meta": "像素马赛克",
+        "blur_inpaint_meta": "智能修复",
+        "inpaint_tooltip": "这种模糊方式适合去除字体",
+        "save_overwrite": "覆盖原图",
+        "save_separate": "单独输出",
+        "save_overwrite_meta": "覆盖原图",
+        "save_separate_meta": "输出到 blurred_output",
+        "off": "关闭",
+        "on": "开启",
+        "preset_custom": "自定",
+        "prev_btn": "⏪ A",
+        "next_btn": "D ⏩",
+        "settings_btn": "⚙",
+        "choose_folder_dialog": "选择待处理图片文件夹",
+        "choose_folder_failed": "打开目录选择器失败：{error}",
+        "read_folder_failed": "读取文件夹失败：{error}",
+        "folder_empty": "这个文件夹里没有可处理的图片。",
+        "loaded_images": "已载入 {count} 张图片。",
+        "outside_folder_nav": "当前目录不在可连续切换的母目录结构中。",
+        "last_folder": "已经是母目录里的最后一个子文件夹。",
+        "first_folder": "已经是母目录里的第一个子文件夹。",
+        "switched_next_folder": "已切换到下一个文件夹：{name}",
+        "switched_prev_folder": "已切换到上一个文件夹：{name}",
+        "parent_progress_done": "已统计母目录进度。",
+        "no_parent_progress": "当前目录没有可统计的母目录。",
+        "selection_too_small": "选区太小，没有执行模糊。",
+        "auto_saved_next": "已自动保存并跳到下一张。",
+        "selection_saved": "已模糊区域 ({left}, {top}) - ({right}, {bottom})。",
+        "reloaded": "已重新载入当前图片。",
+        "undo_empty": "当前没有可撤销的操作。",
+        "undo_done": "已撤销上一步。",
+        "settings_title": "偏好设置",
+        "settings_header": "⚙ 偏好设置",
+        "settings_subtitle": "调整主题、语言、翻页和模糊参数，所有更改会即时生效。",
+        "group_ui": "界面与交互",
+        "group_blur": "模糊与修复",
+        "group_perf": "性能",
+        "fixed_size_box": "固定大小框",
+        "width": "宽度",
+        "height": "高度",
+        "prefetch": "预加载邻近图片数",
+        "about_title": "关于 雾框",
+        "about_name": "雾框",
+        "about_dev": "开发者：cca&qyx&codex",
+        "about_goal": "开发目的：让批量图片打码流程更高效、更顺手，适合长时间连续处理。",
+        "about_ok": "知道了",
+        "canvas_empty": "选择一个图片文件夹开始处理",
+    },
+    "en": {
+        "app_title": "Wukuang",
+        "tagline": "A local desktop workstation for batch image blurring",
+        "dir_progress_title": "Folders & Progress",
+        "open_folder": "Open Image Folder",
+        "rechoose_folder": "Choose Again",
+        "prev_folder": "Previous Folder",
+        "next_folder": "Next Folder",
+        "parent_progress_unknown": "Parent Progress: Not counted",
+        "parent_progress_none": "Parent Progress: -",
+        "count_parent_progress": "Count Parent Progress",
+        "folder_not_selected": "No folder selected",
+        "current_file": "Current File: {name}",
+        "not_started": "Not started",
+        "quick_controls": "Quick Controls",
+        "processing_options": "Processing",
+        "shortcuts_title": "Shortcuts",
+        "shortcuts_keys": "A / D images   Shift+A / Shift+D folders",
+        "shortcuts_hint": "Ctrl+Z undo, R reload, hold A or D for continuous browsing.",
+        "theme": "Theme",
+        "language": "Language",
+        "draw_mode": "Selection Mode",
+        "shape_mode": "Blur Shape",
+        "blur_style": "Blur Style",
+        "save_mode": "Save Mode",
+        "auto_advance": "Auto Next",
+        "blur_strength": "Blur Strength",
+        "corner_radius": "Corner Radius",
+        "fixed_width": "Fixed Width",
+        "fixed_height": "Fixed Height",
+        "option_hint": "Hold A / D for continuous fast browsing.",
+        "folder_placeholder": "No folder selected",
+        "status_ready": "Choose an image folder to begin.",
+        "draw_drag": "Drag",
+        "draw_point": "Point",
+        "draw_fixed": "Fixed",
+        "draw_drag_meta": "Drag and release",
+        "draw_point_meta": "Two-click point mode",
+        "draw_fixed_meta": "Fixed-size single click",
+        "shape_rect": "Rectangle",
+        "shape_circle": "Circle",
+        "shape_rect_meta": "Rectangle blur",
+        "shape_circle_meta": "Circle blur",
+        "blur_gaussian": "Gaussian",
+        "blur_pixelate": "Pixelate",
+        "blur_inpaint": "Inpaint",
+        "blur_gaussian_meta": "Gaussian blur",
+        "blur_pixelate_meta": "Pixel mosaic",
+        "blur_inpaint_meta": "Smart repair",
+        "inpaint_tooltip": "Best for removing text and small overlays",
+        "save_overwrite": "Overwrite",
+        "save_separate": "Separate Output",
+        "save_overwrite_meta": "Overwrite original",
+        "save_separate_meta": "Save to blurred_output",
+        "off": "Off",
+        "on": "On",
+        "preset_custom": "Custom",
+        "prev_btn": "⏪ A",
+        "next_btn": "D ⏩",
+        "settings_btn": "⚙",
+        "choose_folder_dialog": "Choose image folder",
+        "choose_folder_failed": "Failed to open folder picker: {error}",
+        "read_folder_failed": "Failed to read folder: {error}",
+        "folder_empty": "This folder does not contain supported images.",
+        "loaded_images": "Loaded {count} images.",
+        "outside_folder_nav": "This folder is not part of a navigable parent-folder structure.",
+        "last_folder": "Already at the last child folder.",
+        "first_folder": "Already at the first child folder.",
+        "switched_next_folder": "Switched to next folder: {name}",
+        "switched_prev_folder": "Switched to previous folder: {name}",
+        "parent_progress_done": "Parent-folder progress counted.",
+        "no_parent_progress": "No parent folder available for progress counting.",
+        "selection_too_small": "Selection is too small to process.",
+        "auto_saved_next": "Saved and moved to the next image.",
+        "selection_saved": "Processed region ({left}, {top}) - ({right}, {bottom}).",
+        "reloaded": "Reloaded current image.",
+        "undo_empty": "Nothing to undo.",
+        "undo_done": "Undid the last action.",
+        "settings_title": "Preferences",
+        "settings_header": "⚙ Preferences",
+        "settings_subtitle": "Adjust theme, language, browsing, and blur settings with instant updates.",
+        "group_ui": "Interface & Interaction",
+        "group_blur": "Blur & Repair",
+        "group_perf": "Performance",
+        "fixed_size_box": "Fixed-size Box",
+        "width": "Width",
+        "height": "Height",
+        "prefetch": "Neighbor Prefetch Count",
+        "about_title": "About Wukuang",
+        "about_name": "Wukuang",
+        "about_dev": "Developers: cca&qyx&codex",
+        "about_goal": "Purpose: make batch image masking faster and smoother for long review sessions.",
+        "about_ok": "Close",
+        "canvas_empty": "Choose an image folder to begin processing",
+    },
+}
+
+
+def tr(lang: str, key: str, **kwargs) -> str:
+    table = I18N.get(lang, I18N["zh"])
+    text = table.get(key, I18N["zh"].get(key, key))
+    return text.format(**kwargs) if kwargs else text
 
 
 def resource_path(*parts: str) -> Path:
@@ -271,6 +471,10 @@ class SegmentedControl(QWidget):
     def minimumSizeHint(self):
         return QSize(80, 42)
 
+    def set_labels(self, options: list[tuple[str, object]]) -> None:
+        self._labels = options[:]
+        self._refresh_labels()
+
     def set_tooltip_for_value(self, value: object, tooltip: str) -> None:
         for button, option_value in self._buttons:
             if option_value == value:
@@ -311,6 +515,7 @@ class ImageCanvas(QWidget):
             int(DEFAULT_SETTINGS["fixed_box_width"]),
             int(DEFAULT_SETTINGS["fixed_box_height"]),
         )
+        self._empty_text = tr("zh", "canvas_empty")
         self._dragging = False
         self._anchor: QPoint | None = None
         self._current: QPoint | None = None
@@ -336,6 +541,10 @@ class ImageCanvas(QWidget):
 
     def set_fixed_box_size(self, width: int, height: int) -> None:
         self._fixed_box_size = QSize(max(8, int(width)), max(8, int(height)))
+        self.update()
+
+    def set_empty_text(self, text: str) -> None:
+        self._empty_text = text
         self.update()
 
     def _update_display_rect(self) -> None:
@@ -392,7 +601,7 @@ class ImageCanvas(QWidget):
         self._update_display_rect()
         if self._pixmap is None or self._pixmap.isNull():
             painter.setPen(QColor(120, 136, 156))
-            painter.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, "选择一个图片文件夹开始处理")
+            painter.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, self._empty_text)
             return
         if self._display_pixmap is not None:
             painter.drawPixmap(self._display_rect.topLeft(), self._display_pixmap)
@@ -503,9 +712,10 @@ class ImageCanvas(QWidget):
 class SettingsDialog(QWidget):
     changed = Signal(dict)
 
-    def __init__(self, settings: dict, parent: QWidget | None = None) -> None:
+    def __init__(self, settings: dict, language: str, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.settings = settings.copy()
+        self.language = language
         self.setObjectName("settingsRoot")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
@@ -526,28 +736,65 @@ class SettingsDialog(QWidget):
         layout.setContentsMargins(22, 22, 22, 22)
         layout.setSpacing(14)
 
-        title = QLabel("⚙ 偏好设置")
+        title = QLabel(tr(self.language, "settings_header"))
         title.setObjectName("dialogTitle")
-        subtitle = QLabel("调整主题、翻页和模糊参数，所有更改会即时生效。")
+        subtitle = QLabel(tr(self.language, "settings_subtitle"))
         subtitle.setObjectName("dialogSubtitle")
         layout.addWidget(title)
         layout.addWidget(subtitle)
 
-        layout.addWidget(self._group_title("界面与交互"))
-        self.theme_segment = self._section(layout, "界面主题", [("浅色", "light"), ("深色", "dark")], settings["theme_mode"])
-        self.draw_segment = self._section(layout, "框选方式", [("拖拽", "drag"), ("定点", "point"), ("固定", "fixed")], settings["draw_mode"])
-        self.shape_segment = self._section(layout, "模糊形状", [("矩形", "rect"), ("圆形", "circle")], settings["shape_mode"])
-        self.save_segment = self._section(layout, "保存策略", [("覆盖原图", "overwrite"), ("单独输出", "separate")], settings["save_mode"])
-        self.auto_segment = self._section(layout, "处理后自动跳图", [("关闭", False), ("开启", True)], settings["auto_advance"])
-        layout.addWidget(self._group_title("模糊与修复"))
-        self.blur_segment = self._section(layout, "模糊样式", [("高斯", "gaussian"), ("马赛克", "pixelate"), ("修复", "inpaint")], settings["blur_style"])
-        self.blur_segment.set_tooltip_for_value("inpaint", "这种模糊方式适合去除字体")
+        layout.addWidget(self._group_title(tr(self.language, "group_ui")))
+        theme_options = [("浅色", "light"), ("深色", "dark")] if self.language == "zh" else [("Light", "light"), ("Dark", "dark")]
+        self.theme_segment = self._section(
+            layout,
+            tr(self.language, "theme"),
+            theme_options,
+            settings["theme_mode"],
+        )
+        self.language_segment = self._section(
+            layout,
+            tr(self.language, "language"),
+            [("🇨🇳 ZH", "zh"), ("🇺🇸 EN", "en")],
+            settings.get("ui_language", DEFAULT_SETTINGS["ui_language"]),
+        )
+        self.draw_segment = self._section(
+            layout,
+            tr(self.language, "draw_mode"),
+            [(tr(self.language, "draw_drag"), "drag"), (tr(self.language, "draw_point"), "point"), (tr(self.language, "draw_fixed"), "fixed")],
+            settings["draw_mode"],
+        )
+        self.shape_segment = self._section(
+            layout,
+            tr(self.language, "shape_mode"),
+            [(tr(self.language, "shape_rect"), "rect"), (tr(self.language, "shape_circle"), "circle")],
+            settings["shape_mode"],
+        )
+        self.save_segment = self._section(
+            layout,
+            tr(self.language, "save_mode"),
+            [(tr(self.language, "save_overwrite"), "overwrite"), (tr(self.language, "save_separate"), "separate")],
+            settings["save_mode"],
+        )
+        self.auto_segment = self._section(
+            layout,
+            tr(self.language, "auto_advance"),
+            [(tr(self.language, "off"), False), (tr(self.language, "on"), True)],
+            settings["auto_advance"],
+        )
+        layout.addWidget(self._group_title(tr(self.language, "group_blur")))
+        self.blur_segment = self._section(
+            layout,
+            tr(self.language, "blur_style"),
+            [(tr(self.language, "blur_gaussian"), "gaussian"), (tr(self.language, "blur_pixelate"), "pixelate"), (tr(self.language, "blur_inpaint"), "inpaint")],
+            settings["blur_style"],
+        )
+        self.blur_segment.set_tooltip_for_value("inpaint", tr(self.language, "inpaint_tooltip"))
 
         kernel_card = CardFrame()
         kernel_layout = QVBoxLayout(kernel_card)
         kernel_layout.setContentsMargins(16, 16, 16, 16)
         kernel_layout.setSpacing(10)
-        kernel_layout.addWidget(self._label("模糊强度"))
+        kernel_layout.addWidget(self._label(tr(self.language, "blur_strength")))
         row = QHBoxLayout()
         self.kernel_slider = QSlider(Qt.Orientation.Horizontal)
         self.kernel_slider.setRange(15, 121)
@@ -564,7 +811,7 @@ class SettingsDialog(QWidget):
         corner_layout = QVBoxLayout(corner_card)
         corner_layout.setContentsMargins(16, 16, 16, 16)
         corner_layout.setSpacing(10)
-        corner_layout.addWidget(self._label("矩形圆角"))
+        corner_layout.addWidget(self._label(tr(self.language, "corner_radius")))
         corner_row = QHBoxLayout()
         self.corner_slider = QSlider(Qt.Orientation.Horizontal)
         self.corner_slider.setRange(0, 120)
@@ -581,9 +828,9 @@ class SettingsDialog(QWidget):
         fixed_layout = QVBoxLayout(fixed_card)
         fixed_layout.setContentsMargins(16, 16, 16, 16)
         fixed_layout.setSpacing(10)
-        fixed_layout.addWidget(self._label("固定大小框"))
+        fixed_layout.addWidget(self._label(tr(self.language, "fixed_size_box")))
         fixed_width_row = QHBoxLayout()
-        fixed_width_row.addWidget(QLabel("宽度", objectName="miniTitle"))
+        fixed_width_row.addWidget(QLabel(tr(self.language, "width"), objectName="miniTitle"))
         fixed_width_row.addStretch(1)
         self.fixed_width_value = QLabel(str(int(settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"]))))
         self.fixed_width_value.setObjectName("valueChip")
@@ -595,7 +842,7 @@ class SettingsDialog(QWidget):
         self.fixed_width_slider.setFixedHeight(28)
         fixed_layout.addWidget(self.fixed_width_slider)
         fixed_height_row = QHBoxLayout()
-        fixed_height_row.addWidget(QLabel("高度", objectName="miniTitle"))
+        fixed_height_row.addWidget(QLabel(tr(self.language, "height"), objectName="miniTitle"))
         fixed_height_row.addStretch(1)
         self.fixed_height_value = QLabel(str(int(settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"]))))
         self.fixed_height_value.setObjectName("valueChip")
@@ -606,17 +853,17 @@ class SettingsDialog(QWidget):
         self.fixed_height_slider.setValue(int(settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])))
         self.fixed_height_slider.setFixedHeight(28)
         fixed_layout.addWidget(self.fixed_height_slider)
-        self.fixed_preset_segment = SegmentedControl([("64", "64"), ("96", "96"), ("128", "128"), ("自定", "custom")], "custom")
+        self.fixed_preset_segment = SegmentedControl([("64", "64"), ("96", "96"), ("128", "128"), (tr(self.language, "preset_custom"), "custom")], "custom")
         self.fixed_preset_segment.set_value(self._fixed_preset_value(), emit=False)
         fixed_layout.addWidget(self.fixed_preset_segment)
         layout.addWidget(fixed_card)
 
-        layout.addWidget(self._group_title("性能"))
+        layout.addWidget(self._group_title(tr(self.language, "group_perf")))
         prefetch_card = CardFrame()
         prefetch_layout = QVBoxLayout(prefetch_card)
         prefetch_layout.setContentsMargins(16, 16, 16, 16)
         prefetch_layout.setSpacing(10)
-        prefetch_layout.addWidget(self._label("预加载邻近图片数"))
+        prefetch_layout.addWidget(self._label(tr(self.language, "prefetch")))
         prefetch_row = QHBoxLayout()
         self.prefetch_slider = QSlider(Qt.Orientation.Horizontal)
         self.prefetch_slider.setRange(2, 10)
@@ -631,7 +878,16 @@ class SettingsDialog(QWidget):
 
         layout.addStretch(1)
 
-        for segment in (self.theme_segment, self.draw_segment, self.shape_segment, self.blur_segment, self.save_segment, self.auto_segment, self.fixed_preset_segment):
+        for segment in (
+            self.theme_segment,
+            self.language_segment,
+            self.draw_segment,
+            self.shape_segment,
+            self.blur_segment,
+            self.save_segment,
+            self.auto_segment,
+            self.fixed_preset_segment,
+        ):
             segment.changed.connect(self._emit_change)
         self.kernel_slider.valueChanged.connect(lambda value: self.kernel_value.setText(str(value)))
         self.kernel_slider.valueChanged.connect(self._emit_change)
@@ -687,6 +943,7 @@ class SettingsDialog(QWidget):
         self.changed.emit(
             {
                 "theme_mode": self.theme_segment.value(),
+                "ui_language": self.language_segment.value(),
                 "draw_mode": self.draw_segment.value(),
                 "shape_mode": self.shape_segment.value(),
                 "blur_style": self.blur_segment.value(),
@@ -752,6 +1009,35 @@ class MainWindow(QMainWindow):
         QTimer.singleShot(0, self._sync_sidebar_width)
         QTimer.singleShot(80, lambda: enable_windows_titlebar(int(self.winId()), self.settings["theme_mode"] == "dark"))
 
+    def _lang(self) -> str:
+        return str(self.settings.get("ui_language", DEFAULT_SETTINGS["ui_language"]))
+
+    def _t(self, key: str, **kwargs) -> str:
+        return tr(self._lang(), key, **kwargs)
+
+    def _theme_options(self) -> list[tuple[str, object]]:
+        if self._lang() == "zh":
+            return [("浅色", "light"), ("深色", "dark")]
+        return [("Light", "light"), ("Dark", "dark")]
+
+    def _language_options(self) -> list[tuple[str, object]]:
+        return [("🇨🇳 ZH", "zh"), ("🇺🇸 EN", "en")]
+
+    def _draw_options(self) -> list[tuple[str, object]]:
+        return [(self._t("draw_drag"), "drag"), (self._t("draw_point"), "point"), (self._t("draw_fixed"), "fixed")]
+
+    def _shape_options(self) -> list[tuple[str, object]]:
+        return [(self._t("shape_rect"), "rect"), (self._t("shape_circle"), "circle")]
+
+    def _blur_options(self) -> list[tuple[str, object]]:
+        return [(self._t("blur_gaussian"), "gaussian"), (self._t("blur_pixelate"), "pixelate"), (self._t("blur_inpaint"), "inpaint")]
+
+    def _save_options(self) -> list[tuple[str, object]]:
+        return [(self._t("save_overwrite"), "overwrite"), (self._t("save_separate"), "separate")]
+
+    def _auto_options(self) -> list[tuple[str, object]]:
+        return [(self._t("off"), False), (self._t("on"), True)]
+
     def _build_ui(self) -> None:
         root = QWidget()
         root.setObjectName("appRoot")
@@ -799,9 +1085,13 @@ class MainWindow(QMainWindow):
         title_layout = QVBoxLayout(title_wrap)
         title_layout.setContentsMargins(0, 0, 0, 0)
         title_layout.setSpacing(0)
-        title = QLabel(APP_TITLE)
-        title.setObjectName("hero")
-        title_layout.addWidget(title)
+        self.title_label = QLabel(self._t("app_title"))
+        self.title_label.setObjectName("hero")
+        title_layout.addWidget(self.title_label)
+        self.tagline_label = QLabel(self._t("tagline"))
+        self.tagline_label.setObjectName("hint")
+        self.tagline_label.setWordWrap(True)
+        title_layout.addWidget(self.tagline_label)
         header_layout.addWidget(title_wrap, 1, Qt.AlignmentFlag.AlignVCenter)
         sidebar.addWidget(header)
 
@@ -809,29 +1099,30 @@ class MainWindow(QMainWindow):
         action_layout = QVBoxLayout(library_card)
         action_layout.setContentsMargins(12, 12, 12, 12)
         action_layout.setSpacing(8)
-        action_layout.addWidget(QLabel("目录与进度", objectName="sectionTitle"))
-        self.choose_button = QPushButton("打开图片目录")
+        self.library_title_label = QLabel(self._t("dir_progress_title"), objectName="sectionTitle")
+        action_layout.addWidget(self.library_title_label)
+        self.choose_button = QPushButton(self._t("open_folder"))
         self.choose_button.setObjectName("primary")
-        self.rechoose_button = QPushButton("重新选择")
+        self.rechoose_button = QPushButton(self._t("rechoose_folder"))
         self.rechoose_button.setObjectName("secondary")
-        self.prev_folder_button = QPushButton("上一文件夹")
+        self.prev_folder_button = QPushButton(self._t("prev_folder"))
         self.prev_folder_button.setObjectName("secondary")
         self.prev_folder_button.setEnabled(False)
-        self.next_folder_button = QPushButton("下一文件夹")
+        self.next_folder_button = QPushButton(self._t("next_folder"))
         self.next_folder_button.setObjectName("secondary")
         self.next_folder_button.setEnabled(False)
         action_layout.addWidget(self.choose_button)
         action_layout.addWidget(self.rechoose_button)
         action_layout.addWidget(self.prev_folder_button)
         action_layout.addWidget(self.next_folder_button)
-        self.sidebar_folder = QLabel("尚未选择目录")
+        self.sidebar_folder = QLabel(self._t("folder_not_selected"))
         self.sidebar_folder.setObjectName("folderLine")
         self.sidebar_folder.setWordWrap(True)
         action_layout.addWidget(self.sidebar_folder)
-        self.folder_nav_label = QLabel("母目录进度: -")
+        self.folder_nav_label = QLabel(self._t("parent_progress_none"))
         self.folder_nav_label.setObjectName("hint")
         action_layout.addWidget(self.folder_nav_label)
-        self.count_parent_progress_button = QPushButton("统计母目录进度")
+        self.count_parent_progress_button = QPushButton(self._t("count_parent_progress"))
         self.count_parent_progress_button.setObjectName("secondary")
         self.count_parent_progress_button.setEnabled(False)
         action_layout.addWidget(self.count_parent_progress_button)
@@ -840,11 +1131,11 @@ class MainWindow(QMainWindow):
         self.count_label.setObjectName("count")
         info_strip.addWidget(self.count_label)
         info_strip.addStretch(1)
-        self.save_label = QLabel("未开始")
+        self.save_label = QLabel(self._t("not_started"))
         self.save_label.setObjectName("valueChip")
         info_strip.addWidget(self.save_label)
         action_layout.addLayout(info_strip)
-        self.file_label = QLabel("当前文件: -")
+        self.file_label = QLabel(self._t("current_file", name="-"))
         self.file_label.setObjectName("body")
         self.file_label.setWordWrap(True)
         action_layout.addWidget(self.file_label)
@@ -854,27 +1145,38 @@ class MainWindow(QMainWindow):
         quick_layout = QVBoxLayout(quick)
         quick_layout.setContentsMargins(12, 12, 12, 12)
         quick_layout.setSpacing(8)
-        quick_layout.addWidget(QLabel("快速控制", objectName="sectionTitle"))
-        self.theme_segment = SegmentedControl([("浅色", "light"), ("深色", "dark")], self.settings["theme_mode"])
-        self.draw_segment = SegmentedControl([("拖拽", "drag"), ("定点", "point"), ("固定", "fixed")], self.settings["draw_mode"])
-        self.shape_segment = SegmentedControl([("矩形", "rect"), ("圆形", "circle")], self.settings["shape_mode"])
-        self.blur_segment = SegmentedControl([("高斯", "gaussian"), ("马赛克", "pixelate"), ("修复", "inpaint")], self.settings["blur_style"])
-        self.blur_segment.set_tooltip_for_value("inpaint", "这种模糊方式适合去除字体")
-        for title_text, control in (("主题", self.theme_segment), ("框选方式", self.draw_segment), ("模糊形状", self.shape_segment), ("模糊样式", self.blur_segment)):
-            quick_layout.addWidget(self._build_setting_row(title_text, control))
+        self.quick_title_label = QLabel(self._t("quick_controls"), objectName="sectionTitle")
+        quick_layout.addWidget(self.quick_title_label)
+        self.theme_segment = SegmentedControl(self._theme_options(), self.settings["theme_mode"])
+        self.language_segment = SegmentedControl(self._language_options(), self._lang())
+        self.draw_segment = SegmentedControl(self._draw_options(), self.settings["draw_mode"])
+        self.shape_segment = SegmentedControl(self._shape_options(), self.settings["shape_mode"])
+        self.blur_segment = SegmentedControl(self._blur_options(), self.settings["blur_style"])
+        self.blur_segment.set_tooltip_for_value("inpaint", self._t("inpaint_tooltip"))
+        self.theme_row = self._build_setting_row(self._t("theme"), self.theme_segment)
+        self.language_row = self._build_setting_row(self._t("language"), self.language_segment)
+        self.draw_row = self._build_setting_row(self._t("draw_mode"), self.draw_segment)
+        self.shape_row = self._build_setting_row(self._t("shape_mode"), self.shape_segment)
+        self.blur_row = self._build_setting_row(self._t("blur_style"), self.blur_segment)
+        for row in (self.theme_row, self.language_row, self.draw_row, self.shape_row, self.blur_row):
+            quick_layout.addWidget(row)
         sidebar.addWidget(quick)
 
         options = CardFrame()
         options_layout = QVBoxLayout(options)
         options_layout.setContentsMargins(12, 12, 12, 12)
         options_layout.setSpacing(8)
-        options_layout.addWidget(QLabel("处理选项", objectName="sectionTitle"))
-        self.save_segment = SegmentedControl([("覆盖原图", "overwrite"), ("单独输出", "separate")], self.settings["save_mode"])
-        self.auto_segment = SegmentedControl([("关闭", False), ("开启", True)], self.settings["auto_advance"])
-        for title_text, control in (("保存策略", self.save_segment), ("自动跳图", self.auto_segment)):
-            options_layout.addWidget(self._build_setting_row(title_text, control))
+        self.options_title_label = QLabel(self._t("processing_options"), objectName="sectionTitle")
+        options_layout.addWidget(self.options_title_label)
+        self.save_segment = SegmentedControl(self._save_options(), self.settings["save_mode"])
+        self.auto_segment = SegmentedControl(self._auto_options(), self.settings["auto_advance"])
+        self.save_row = self._build_setting_row(self._t("save_mode"), self.save_segment)
+        self.auto_row = self._build_setting_row(self._t("auto_advance"), self.auto_segment)
+        options_layout.addWidget(self.save_row)
+        options_layout.addWidget(self.auto_row)
         slider_row = QHBoxLayout()
-        slider_row.addWidget(QLabel("模糊强度", objectName="miniTitle"))
+        self.blur_strength_label = QLabel(self._t("blur_strength"), objectName="miniTitle")
+        slider_row.addWidget(self.blur_strength_label)
         slider_row.addStretch(1)
         self.blur_value = QLabel(str(self.settings["blur_kernel"]))
         self.blur_value.setObjectName("valueChip")
@@ -886,7 +1188,8 @@ class MainWindow(QMainWindow):
         self.blur_slider.setFixedHeight(28)
         options_layout.addWidget(self.blur_slider)
         corner_row = QHBoxLayout()
-        corner_row.addWidget(QLabel("矩形圆角", objectName="miniTitle"))
+        self.corner_radius_label = QLabel(self._t("corner_radius"), objectName="miniTitle")
+        corner_row.addWidget(self.corner_radius_label)
         corner_row.addStretch(1)
         self.corner_value = QLabel(str(self.settings.get("corner_radius", DEFAULT_SETTINGS["corner_radius"])))
         self.corner_value.setObjectName("valueChip")
@@ -898,7 +1201,8 @@ class MainWindow(QMainWindow):
         self.corner_slider.setFixedHeight(28)
         options_layout.addWidget(self.corner_slider)
         fixed_width_row = QHBoxLayout()
-        fixed_width_row.addWidget(QLabel("固定宽度", objectName="miniTitle"))
+        self.fixed_width_label = QLabel(self._t("fixed_width"), objectName="miniTitle")
+        fixed_width_row.addWidget(self.fixed_width_label)
         fixed_width_row.addStretch(1)
         self.fixed_width_value = QLabel(str(int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"]))))
         self.fixed_width_value.setObjectName("valueChip")
@@ -910,7 +1214,8 @@ class MainWindow(QMainWindow):
         self.fixed_width_slider.setFixedHeight(28)
         options_layout.addWidget(self.fixed_width_slider)
         fixed_height_row = QHBoxLayout()
-        fixed_height_row.addWidget(QLabel("固定高度", objectName="miniTitle"))
+        self.fixed_height_label = QLabel(self._t("fixed_height"), objectName="miniTitle")
+        fixed_height_row.addWidget(self.fixed_height_label)
         fixed_height_row.addStretch(1)
         self.fixed_height_value = QLabel(str(int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"]))))
         self.fixed_height_value.setObjectName("valueChip")
@@ -921,7 +1226,7 @@ class MainWindow(QMainWindow):
         self.fixed_height_slider.setValue(int(self.settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])))
         self.fixed_height_slider.setFixedHeight(28)
         options_layout.addWidget(self.fixed_height_slider)
-        self.fixed_preset_segment = SegmentedControl([("64", "64"), ("96", "96"), ("128", "128"), ("自定", "custom")], "custom")
+        self.fixed_preset_segment = SegmentedControl([("64", "64"), ("96", "96"), ("128", "128"), (self._t("preset_custom"), "custom")], "custom")
         self.fixed_preset_segment.set_value(
             self._fixed_preset_value(
                 int(self.settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])),
@@ -930,7 +1235,7 @@ class MainWindow(QMainWindow):
             emit=False,
         )
         options_layout.addWidget(self.fixed_preset_segment)
-        self.option_hint = QLabel("长按 A / D 可以连续快速翻页浏览。")
+        self.option_hint = QLabel(self._t("option_hint"))
         self.option_hint.setObjectName("hint")
         options_layout.addWidget(self.option_hint)
         sidebar.addWidget(options)
@@ -939,15 +1244,16 @@ class MainWindow(QMainWindow):
         shortcut_layout = QVBoxLayout(shortcut)
         shortcut_layout.setContentsMargins(12, 12, 12, 12)
         shortcut_layout.setSpacing(6)
-        shortcut_layout.addWidget(QLabel("快捷操作", objectName="sectionTitle"))
-        keys = QLabel("A / D 切图   Shift+A / Shift+D 切文件夹")
-        keys.setObjectName("body")
-        keys.setWordWrap(True)
-        shortcut_layout.addWidget(keys)
-        hint = QLabel("Ctrl+Z 撤销，R 重新载入，长按 A 或 D 可连续浏览图片。")
-        hint.setObjectName("hint")
-        hint.setWordWrap(True)
-        shortcut_layout.addWidget(hint)
+        self.shortcuts_title_label = QLabel(self._t("shortcuts_title"), objectName="sectionTitle")
+        shortcut_layout.addWidget(self.shortcuts_title_label)
+        self.shortcuts_keys_label = QLabel(self._t("shortcuts_keys"))
+        self.shortcuts_keys_label.setObjectName("body")
+        self.shortcuts_keys_label.setWordWrap(True)
+        shortcut_layout.addWidget(self.shortcuts_keys_label)
+        self.shortcuts_hint_label = QLabel(self._t("shortcuts_hint"))
+        self.shortcuts_hint_label.setObjectName("hint")
+        self.shortcuts_hint_label.setWordWrap(True)
+        shortcut_layout.addWidget(self.shortcuts_hint_label)
         sidebar.addWidget(shortcut)
         sidebar.addStretch(1)
 
@@ -961,17 +1267,17 @@ class MainWindow(QMainWindow):
         top_layout = QHBoxLayout(topbar)
         top_layout.setContentsMargins(12, 10, 12, 10)
         top_layout.setSpacing(8)
-        self.folder_pill = QLabel("尚未选择文件夹")
+        self.folder_pill = QLabel(self._t("folder_placeholder"))
         self.folder_pill.setObjectName("folderPill")
         self.folder_pill.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.prev_button = QPushButton("← A")
+        self.prev_button = QPushButton(self._t("prev_btn"))
         self.prev_button.setObjectName("secondary")
-        self.next_button = QPushButton("D →")
+        self.next_button = QPushButton(self._t("next_btn"))
         self.next_button.setObjectName("primary")
-        self.settings_button = QPushButton("⚙")
+        self.settings_button = QPushButton(self._t("settings_btn"))
         self.settings_button.setObjectName("secondary")
-        self.prev_button.setFixedWidth(68)
-        self.next_button.setFixedWidth(68)
+        self.prev_button.setFixedWidth(84)
+        self.next_button.setFixedWidth(84)
         self.settings_button.setFixedWidth(46)
         top_layout.addWidget(self.folder_pill, 1)
         top_layout.addWidget(self.prev_button)
@@ -1001,7 +1307,7 @@ class MainWindow(QMainWindow):
         self.status_card = status
         status_layout = QHBoxLayout(status)
         status_layout.setContentsMargins(14, 8, 14, 8)
-        self.status_label = QLabel("选择一个图片文件夹开始。")
+        self.status_label = QLabel(self._t("status_ready"))
         self.status_label.setObjectName("statusLabel")
         status_layout.addWidget(self.status_label)
         right_layout.addWidget(status)
@@ -1012,10 +1318,13 @@ class MainWindow(QMainWindow):
         self.prev_folder_button.clicked.connect(self.prev_folder)
         self.next_folder_button.clicked.connect(self.next_folder)
         self.count_parent_progress_button.clicked.connect(self.count_parent_progress)
-        self.prev_button.clicked.connect(self.prev_image)
-        self.next_button.clicked.connect(self.next_image)
+        self.prev_button.pressed.connect(lambda: self._begin_flip(-1))
+        self.next_button.pressed.connect(lambda: self._begin_flip(1))
+        self.prev_button.released.connect(self._stop_flip)
+        self.next_button.released.connect(self._stop_flip)
         self.settings_button.clicked.connect(self.open_settings)
         self.theme_segment.changed.connect(lambda value: self._apply_setting("theme_mode", value))
+        self.language_segment.changed.connect(lambda value: self._apply_setting("ui_language", value))
         self.draw_segment.changed.connect(lambda value: self._apply_setting("draw_mode", value))
         self.shape_segment.changed.connect(lambda value: self._apply_setting("shape_mode", value))
         self.blur_segment.changed.connect(lambda value: self._apply_setting("blur_style", value))
@@ -1043,6 +1352,7 @@ class MainWindow(QMainWindow):
         label.setObjectName("miniTitle")
         layout.addWidget(label)
         layout.addWidget(control)
+        row.title_label = label
         return row
 
     def _sync_sidebar_width(self) -> None:
@@ -1288,10 +1598,10 @@ class MainWindow(QMainWindow):
 
     def _meta_texts(self) -> tuple[str, str, str, str]:
         return (
-            "拖拽松手确认" if self.settings["draw_mode"] == "drag" else ("定点两次点击" if self.settings["draw_mode"] == "point" else "固定大小点选"),
-            "矩形模糊" if self.settings["shape_mode"] == "rect" else "圆形模糊",
-            "高斯模糊" if self.settings["blur_style"] == "gaussian" else ("像素马赛克" if self.settings["blur_style"] == "pixelate" else "智能修复"),
-            "覆盖原图" if self.settings["save_mode"] == "overwrite" else "输出到 blurred_output",
+            self._t("draw_drag_meta") if self.settings["draw_mode"] == "drag" else (self._t("draw_point_meta") if self.settings["draw_mode"] == "point" else self._t("draw_fixed_meta")),
+            self._t("shape_rect_meta") if self.settings["shape_mode"] == "rect" else self._t("shape_circle_meta"),
+            self._t("blur_gaussian_meta") if self.settings["blur_style"] == "gaussian" else (self._t("blur_pixelate_meta") if self.settings["blur_style"] == "pixelate" else self._t("blur_inpaint_meta")),
+            self._t("save_overwrite_meta") if self.settings["save_mode"] == "overwrite" else self._t("save_separate_meta"),
         )
 
     def _fixed_preset_value(self, width: int, height: int) -> str:
@@ -1300,6 +1610,44 @@ class MainWindow(QMainWindow):
         return "custom"
 
     def _update_ui_labels(self) -> None:
+        self.setWindowTitle(self._t("app_title"))
+        self.title_label.setText(self._t("app_title"))
+        self.tagline_label.setText(self._t("tagline"))
+        self.library_title_label.setText(self._t("dir_progress_title"))
+        self.choose_button.setText(self._t("open_folder"))
+        self.rechoose_button.setText(self._t("rechoose_folder"))
+        self.prev_folder_button.setText(self._t("prev_folder"))
+        self.next_folder_button.setText(self._t("next_folder"))
+        self.count_parent_progress_button.setText(self._t("count_parent_progress"))
+        self.quick_title_label.setText(self._t("quick_controls"))
+        self.options_title_label.setText(self._t("processing_options"))
+        self.shortcuts_title_label.setText(self._t("shortcuts_title"))
+        self.shortcuts_keys_label.setText(self._t("shortcuts_keys"))
+        self.shortcuts_hint_label.setText(self._t("shortcuts_hint"))
+        self.blur_strength_label.setText(self._t("blur_strength"))
+        self.corner_radius_label.setText(self._t("corner_radius"))
+        self.fixed_width_label.setText(self._t("fixed_width"))
+        self.fixed_height_label.setText(self._t("fixed_height"))
+        self.option_hint.setText(self._t("option_hint"))
+        self.prev_button.setText(self._t("prev_btn"))
+        self.next_button.setText(self._t("next_btn"))
+        self.settings_button.setText(self._t("settings_btn"))
+        self.theme_row.title_label.setText(self._t("theme"))
+        self.language_row.title_label.setText(self._t("language"))
+        self.draw_row.title_label.setText(self._t("draw_mode"))
+        self.shape_row.title_label.setText(self._t("shape_mode"))
+        self.blur_row.title_label.setText(self._t("blur_style"))
+        self.save_row.title_label.setText(self._t("save_mode"))
+        self.auto_row.title_label.setText(self._t("auto_advance"))
+        self.theme_segment.set_labels(self._theme_options())
+        self.language_segment.set_labels(self._language_options())
+        self.draw_segment.set_labels(self._draw_options())
+        self.shape_segment.set_labels(self._shape_options())
+        self.blur_segment.set_labels(self._blur_options())
+        self.blur_segment.set_tooltip_for_value("inpaint", self._t("inpaint_tooltip"))
+        self.save_segment.set_labels(self._save_options())
+        self.auto_segment.set_labels(self._auto_options())
+        self.fixed_preset_segment.set_labels([("64", "64"), ("96", "96"), ("128", "128"), (self._t("preset_custom"), "custom")])
         self.blur_slider.blockSignals(True)
         self.blur_slider.setValue(int(self.settings["blur_kernel"]))
         self.blur_slider.blockSignals(False)
@@ -1325,17 +1673,25 @@ class MainWindow(QMainWindow):
         )
         for label, text in zip(self.meta_labels, self._meta_texts(), strict=False):
             label.setText(text)
+        if self.folder is None:
+            self.folder_pill.setText(self._t("folder_placeholder"))
+            self.sidebar_folder.setText(self._t("folder_not_selected"))
+            self.file_label.setText(self._t("current_file", name="-"))
+            self.status_label.setText(self._t("status_ready"))
         self.theme_segment.set_value(self.settings["theme_mode"], emit=False)
+        self.language_segment.set_value(self._lang(), emit=False)
         self.draw_segment.set_value(self.settings["draw_mode"], emit=False)
         self.shape_segment.set_value(self.settings["shape_mode"], emit=False)
         self.blur_segment.set_value(self.settings["blur_style"], emit=False)
         self.save_segment.set_value(self.settings["save_mode"], emit=False)
         self.auto_segment.set_value(self.settings["auto_advance"], emit=False)
+        self.canvas.set_empty_text(self._t("canvas_empty"))
+        self._update_folder_navigation_state()
 
     def _apply_setting(self, key: str, value: object) -> None:
         self.settings[key] = value
         SettingsStore.save(self.settings)
-        if key in {"theme_mode", "draw_mode", "shape_mode", "corner_radius", "fixed_box_width", "fixed_box_height"}:
+        if key in {"theme_mode", "ui_language", "draw_mode", "shape_mode", "corner_radius", "fixed_box_width", "fixed_box_height"}:
             self._apply_theme()
         else:
             self._update_ui_labels()
@@ -1394,6 +1750,19 @@ class MainWindow(QMainWindow):
         self.fixed_width_slider.setValue(size)
         self.fixed_height_slider.setValue(size)
 
+    def _begin_flip(self, direction: int) -> None:
+        if direction > 0:
+            self.next_image()
+        elif direction < 0:
+            self.prev_image()
+        self.flip_direction = direction
+        self.flip_hold_timer.start()
+
+    def _stop_flip(self) -> None:
+        self.flip_direction = 0
+        self.flip_hold_timer.stop()
+        self.flip_repeat_timer.stop()
+
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.isAutoRepeat():
             return
@@ -1404,14 +1773,10 @@ class MainWindow(QMainWindow):
             self.prev_folder()
             return
         if event.key() == Qt.Key.Key_D:
-            self.next_image()
-            self.flip_direction = 1
-            self.flip_hold_timer.start()
+            self._begin_flip(1)
             return
         if event.key() == Qt.Key.Key_A:
-            self.prev_image()
-            self.flip_direction = -1
-            self.flip_hold_timer.start()
+            self._begin_flip(-1)
             return
         if event.key() == Qt.Key.Key_R:
             self.reload_current()
@@ -1425,9 +1790,7 @@ class MainWindow(QMainWindow):
         if event.isAutoRepeat():
             return
         if event.key() in (Qt.Key.Key_A, Qt.Key.Key_D):
-            self.flip_direction = 0
-            self.flip_hold_timer.stop()
-            self.flip_repeat_timer.stop()
+            self._stop_flip()
             return
         super().keyReleaseEvent(event)
 
@@ -1443,9 +1806,9 @@ class MainWindow(QMainWindow):
 
     def choose_folder(self) -> None:
         try:
-            folder = QFileDialog.getExistingDirectory(self, "选择待处理图片文件夹")
+            folder = QFileDialog.getExistingDirectory(self, self._t("choose_folder_dialog"))
         except Exception as exc:
-            self.set_status(f"打开目录选择器失败：{exc}")
+            self.set_status(self._t("choose_folder_failed", error=exc), kind="error", transient_ms=1800)
             return
         if not folder:
             return
@@ -1479,7 +1842,7 @@ class MainWindow(QMainWindow):
 
     def _update_folder_navigation_state(self) -> None:
         if self.folder is None:
-            self.folder_nav_label.setText("母目录进度: -")
+            self.folder_nav_label.setText(self._t("parent_progress_none"))
             self.count_parent_progress_button.setEnabled(False)
             self.prev_folder_button.setEnabled(False)
             self.next_folder_button.setEnabled(False)
@@ -1487,11 +1850,12 @@ class MainWindow(QMainWindow):
         self._ensure_sibling_folders_loaded()
         self.count_parent_progress_button.setEnabled(self.parent_folder is not None)
         if not self._folder_progress_counted:
-            self.folder_nav_label.setText("母目录进度: 未统计")
+            self.folder_nav_label.setText(self._t("parent_progress_unknown"))
         elif not self.sibling_folders or self.current_folder_index < 0:
-            self.folder_nav_label.setText("母目录进度: -")
+            self.folder_nav_label.setText(self._t("parent_progress_none"))
         else:
-            self.folder_nav_label.setText(f"母目录进度: {self.current_folder_index + 1} / {len(self.sibling_folders)}")
+            prefix = "母目录进度" if self._lang() == "zh" else "Parent Progress"
+            self.folder_nav_label.setText(f"{prefix}: {self.current_folder_index + 1} / {len(self.sibling_folders)}")
         self.prev_folder_button.setEnabled(self.current_folder_index > 0)
         self.next_folder_button.setEnabled(
             bool(self.sibling_folders) and self.current_folder_index >= 0 and self.current_folder_index < len(self.sibling_folders) - 1
@@ -1499,21 +1863,21 @@ class MainWindow(QMainWindow):
 
     def count_parent_progress(self) -> None:
         if self.folder is None or self.parent_folder is None:
-            self.set_status("当前目录没有可统计的母目录。", kind="warning", transient_ms=1500)
+            self.set_status(self._t("no_parent_progress"), kind="warning", transient_ms=1500)
             return
         self._ensure_sibling_folders_loaded()
         self._folder_progress_counted = True
         self._update_folder_navigation_state()
-        self.set_status("已统计母目录进度。", kind="success", transient_ms=1200)
+        self.set_status(self._t("parent_progress_done"), kind="success", transient_ms=1200)
 
     def load_folder(self, directory: Path) -> bool:
         try:
             image_paths = self._sorted_image_paths(directory)
         except OSError as exc:
-            self.set_status(f"读取文件夹失败：{exc}", kind="error", transient_ms=1800)
+            self.set_status(self._t("read_folder_failed", error=exc), kind="error", transient_ms=1800)
             return False
         if not image_paths:
-            self.set_status("这个文件夹里没有可处理的图片。", kind="warning", transient_ms=1600)
+            self.set_status(self._t("folder_empty"), kind="warning", transient_ms=1600)
             return False
 
         self.image_paths = image_paths
@@ -1527,36 +1891,36 @@ class MainWindow(QMainWindow):
         self.sidebar_folder.setText(str(directory))
         self._update_folder_navigation_state()
         self.show_image(0, force=True)
-        self.set_status(f"已载入 {len(self.image_paths)} 张图片。", kind="success", transient_ms=1200)
+        self.set_status(self._t("loaded_images", count=len(self.image_paths)), kind="success", transient_ms=1200)
         return True
 
     def next_folder(self) -> None:
         self._ensure_sibling_folders_loaded()
         if self.folder is None or not self.sibling_folders or self.current_folder_index < 0:
-            self.set_status("当前目录不在可连续切换的母目录结构中。", kind="warning", transient_ms=1600)
+            self.set_status(self._t("outside_folder_nav"), kind="warning", transient_ms=1600)
             return
         next_index = self.current_folder_index + 1
         if next_index >= len(self.sibling_folders):
-            self.set_status("已经是母目录里的最后一个子文件夹。", kind="warning", transient_ms=1600)
+            self.set_status(self._t("last_folder"), kind="warning", transient_ms=1600)
             return
         next_directory = self.sibling_folders[next_index]
         if self.load_folder(next_directory):
             self.current_folder_index = next_index
-            self.set_status(f"已切换到下一个文件夹：{next_directory.name}", kind="success", transient_ms=1500)
+            self.set_status(self._t("switched_next_folder", name=next_directory.name), kind="success", transient_ms=1500)
 
     def prev_folder(self) -> None:
         self._ensure_sibling_folders_loaded()
         if self.folder is None or not self.sibling_folders or self.current_folder_index < 0:
-            self.set_status("当前目录不在可连续切换的母目录结构中。", kind="warning", transient_ms=1600)
+            self.set_status(self._t("outside_folder_nav"), kind="warning", transient_ms=1600)
             return
         prev_index = self.current_folder_index - 1
         if prev_index < 0:
-            self.set_status("已经是母目录里的第一个子文件夹。", kind="warning", transient_ms=1600)
+            self.set_status(self._t("first_folder"), kind="warning", transient_ms=1600)
             return
         prev_directory = self.sibling_folders[prev_index]
         if self.load_folder(prev_directory):
             self.current_folder_index = prev_index
-            self.set_status(f"已切换到上一个文件夹：{prev_directory.name}", kind="success", transient_ms=1500)
+            self.set_status(self._t("switched_prev_folder", name=prev_directory.name), kind="success", transient_ms=1500)
 
     def preferred_path(self, source: Path) -> Path:
         if self.settings["save_mode"] == "overwrite":
@@ -1637,8 +2001,8 @@ class MainWindow(QMainWindow):
         self.image_size_cache[path] = QSize(self.current_full_image.width, self.current_full_image.height)
         self.canvas.set_preview(pixmap, QSize(self.current_full_image.width, self.current_full_image.height))
         self.count_label.setText(f"{self.current_index + 1} / {len(self.image_paths)}")
-        self.file_label.setText(f"当前文件: {self.current_source_path.name}")
-        self.save_label.setText("覆盖原图" if self.settings["save_mode"] == "overwrite" else "单独输出")
+        self.file_label.setText(self._t("current_file", name=self.current_source_path.name))
+        self.save_label.setText(self._t("save_overwrite") if self.settings["save_mode"] == "overwrite" else self._t("save_separate"))
 
     def show_image(self, index: int, force: bool = False, clear_undo: bool = True) -> None:
         if not self.image_paths or self.folder is None:
@@ -1655,8 +2019,8 @@ class MainWindow(QMainWindow):
         preview = self._load_preview(path, QSize(max(640, self.canvas.width()), max(480, self.canvas.height())))
         self.canvas.set_preview(preview, self._image_size(path))
         self.count_label.setText(f"{index + 1} / {len(self.image_paths)}")
-        self.file_label.setText(f"当前文件: {self.current_source_path.name}")
-        self.save_label.setText("覆盖原图" if self.settings["save_mode"] == "overwrite" else "单独输出")
+        self.file_label.setText(self._t("current_file", name=self.current_source_path.name))
+        self.save_label.setText(self._t("save_overwrite") if self.settings["save_mode"] == "overwrite" else self._t("save_separate"))
         self._schedule_prefetch(index)
 
     def ensure_full_image(self) -> Image.Image | None:
@@ -1675,7 +2039,7 @@ class MainWindow(QMainWindow):
         right = min(image.width, rect.left() + rect.width())
         bottom = min(image.height, rect.top() + rect.height())
         if right - left < 2 or bottom - top < 2:
-            self.set_status("选区太小，没有执行模糊。", kind="warning", transient_ms=1400)
+            self.set_status(self._t("selection_too_small"), kind="warning", transient_ms=1400)
             return
         self.undo_stack.append(image.copy())
         self.current_full_image = self._blur_region(image, (left, top, right, bottom))
@@ -1684,10 +2048,10 @@ class MainWindow(QMainWindow):
         self.cache.clear_path(self.output_path(self.current_source_path))
         if self.settings["auto_advance"] and self.current_index < len(self.image_paths) - 1:
             self.next_image()
-            self.set_status("已自动保存并跳到下一张。", kind="success", transient_ms=1600)
+            self.set_status(self._t("auto_saved_next"), kind="success", transient_ms=1600)
         else:
             self._refresh_canvas_from_memory()
-            self.set_status(f"已模糊区域 ({left}, {top}) - ({right}, {bottom})。", kind="success", transient_ms=1600)
+            self.set_status(self._t("selection_saved", left=left, top=top, right=right, bottom=bottom), kind="success", transient_ms=1600)
 
     def _blur_region(self, image: Image.Image, box: tuple[int, int, int, int]) -> Image.Image:
         left, top, right, bottom = box
@@ -1754,7 +2118,7 @@ class MainWindow(QMainWindow):
         elif target.suffix.lower() == ".png":
             save_kwargs["compress_level"] = 0
         self.current_full_image.save(target, **save_kwargs)
-        self.save_label.setText("覆盖原图" if self.settings["save_mode"] == "overwrite" else "单独输出")
+        self.save_label.setText(self._t("save_overwrite") if self.settings["save_mode"] == "overwrite" else self._t("save_separate"))
 
     def prev_image(self) -> None:
         if self.current_index > 0:
@@ -1767,18 +2131,18 @@ class MainWindow(QMainWindow):
     def reload_current(self) -> None:
         if self.current_index >= 0:
             self.show_image(self.current_index, force=True)
-            self.set_status("已重新载入当前图片。", transient_ms=1200)
+            self.set_status(self._t("reloaded"), transient_ms=1200)
 
     def undo_last(self) -> None:
         if not self.undo_stack or self.current_source_path is None:
-            self.set_status("当前没有可撤销的操作。", kind="warning", transient_ms=1500)
+            self.set_status(self._t("undo_empty"), kind="warning", transient_ms=1500)
             return
         self.current_full_image = self.undo_stack.pop()
         self._save_current_image()
         self.cache.clear_path(self.current_source_path)
         self.cache.clear_path(self.output_path(self.current_source_path))
         self._refresh_canvas_from_memory()
-        self.set_status("已撤销上一步。", kind="success", transient_ms=1600)
+        self.set_status(self._t("undo_done"), kind="success", transient_ms=1600)
 
     def open_settings(self) -> None:
         if self.settings_window is not None and self.settings_window.isVisible():
@@ -1791,10 +2155,10 @@ class MainWindow(QMainWindow):
         dialog.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         dialog.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         dialog.setObjectName("settingsDialog")
-        dialog.setWindowTitle("偏好设置")
+        dialog.setWindowTitle(self._t("settings_title"))
         dialog.resize(760, 720)
         dialog.setStyleSheet(self._window_stylesheet or self._stylesheet())
-        sheet = SettingsDialog(self.settings, dialog)
+        sheet = SettingsDialog(self.settings, self._lang(), dialog)
         sheet.setStyleSheet(self._window_stylesheet or self._stylesheet())
         layout = QVBoxLayout(dialog)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -1812,11 +2176,12 @@ class MainWindow(QMainWindow):
 
     def _apply_settings_from_dialog(self, data: dict) -> None:
         old_theme = self.settings["theme_mode"]
+        old_language = self.settings.get("ui_language", DEFAULT_SETTINGS["ui_language"])
         self.settings.update(data)
         SettingsStore.save(self.settings)
         self._update_ui_labels()
         self._apply_theme()
-        if old_theme != self.settings["theme_mode"] and self.settings_window is not None:
+        if (old_theme != self.settings["theme_mode"] or old_language != self.settings.get("ui_language")) and self.settings_window is not None:
             geometry = self.settings_window.geometry()
             self.settings_window.close()
             QTimer.singleShot(30, lambda g=geometry: self._reopen_settings(g))
@@ -1834,17 +2199,17 @@ class MainWindow(QMainWindow):
             self.about_window.activateWindow()
             return
         dialog = QDialog(self)
-        dialog.setWindowTitle("关于 雾框")
+        dialog.setWindowTitle(self._t("about_title"))
         dialog.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         dialog.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         dialog.setStyleSheet(self._window_stylesheet or self._stylesheet())
         layout = QVBoxLayout(dialog)
         layout.setContentsMargins(22, 22, 22, 22)
         layout.setSpacing(10)
-        layout.addWidget(QLabel("雾框", objectName="dialogTitle"))
-        layout.addWidget(QLabel("开发者：cca&qyx&codex", objectName="sectionTitle"))
-        layout.addWidget(QLabel("开发目的：让批量图片打码流程更高效、更顺手，适合长时间连续处理。", objectName="body"))
-        close_button = QPushButton("知道了")
+        layout.addWidget(QLabel(self._t("about_name"), objectName="dialogTitle"))
+        layout.addWidget(QLabel(self._t("about_dev"), objectName="sectionTitle"))
+        layout.addWidget(QLabel(self._t("about_goal"), objectName="body"))
+        close_button = QPushButton(self._t("about_ok"))
         close_button.setObjectName("primary")
         close_button.clicked.connect(dialog.accept)
         layout.addWidget(close_button, 0, Qt.AlignmentFlag.AlignRight)

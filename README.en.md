@@ -1,166 +1,170 @@
-<br />
 <div align="center">
-  <img src="assets/app-icon.png" alt="Wukuang Logo" width="120" height="120">
-
-  <h1 align="center" style="margin-top: 0.2em;">Wukuang</h1>
-
-  <p align="center">
-    <a href="./README.md">简体中文</a> | English
+  <p>
+    <img alt="Wukuang" height="140px" src="./assets/app-icon.png">
   </p>
 
-  [![Python][python-badge]][python-url]
-  [![PySide6][pyside-badge]][pyside-url]
-  [![OpenCV][opencv-badge]][opencv-url]
-  [![Pillow][pillow-badge]][pillow-url]
-  [![PyInstaller][pyinstaller-badge]][pyinstaller-url]
+[简体中文](./README.md) | [English](./README.en.md)
 
-  <p align="center">
-    <h3>A local desktop workstation for batch image blurring and dataset desensitization</h3>
-    <br />
-    <a href="https://github.com/verbalPoem/wukuang/releases"><strong>Download Latest Release &raquo;</strong></a>
-    <br />
-    <br />
-    <a href="#features">Features</a>
-    &middot;
-    <a href="#quick-start">Quick Start</a>
-    &middot;
-    <a href="#development">Development</a>
-    &middot;
-    <a href="#notes">Notes</a>
-    &middot;
-    <a href="#license">License</a>
-  </p>
+  <h1>Wukuang</h1>
+  <p>A local desktop tool for dataset desensitization, batch image blurring, and manual sensitive-region cleanup</p>
 </div>
 
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#whats-new-in-v104">What's New in v1.0.4</a></li>
-    <li><a href="#why-this-project">Why This Project</a></li>
-    <li><a href="#preview">Preview</a></li>
-    <li><a href="#quick-start">Quick Start</a></li>
-    <li><a href="#shortcuts">Shortcuts</a></li>
-    <li><a href="#development">Development</a></li>
-    <li><a href="#project-structure">Project Structure</a></li>
-    <li><a href="#notes">Notes</a></li>
-    <li><a href="#author">Author</a></li>
-    <li><a href="#license">License</a></li>
-  </ol>
-</details>
-
-## Features
-
 <p align="center">
-  <img src="assets/release-cover.png" alt="Release Cover" width="48%">
+    <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+    <a href="https://github.com/verbalPoem/wukuang/releases"><img src="https://img.shields.io/github/v/release/verbalPoem/wukuang?color=ffa"></a>
+    <a href=""><img src="https://img.shields.io/badge/python-3.12+-3776AB.svg"></a>
+    <a href=""><img src="https://img.shields.io/badge/gui-PySide6-41CD52.svg"></a>
+    <a href=""><img src="https://img.shields.io/badge/os-windows-0078D6.svg"></a>
+    <a href="https://github.com/verbalPoem/wukuang/releases"><img src="https://img.shields.io/github/downloads/verbalPoem/wukuang/total?label=downloads"></a>
 </p>
 
-- **Built for batch workflows**: process one image after another inside a folder, ideal for datasets, screenshots, and review pipelines
-- **Three selection modes**: drag-to-confirm, two-click point mode, and fixed-size single-click mode
-- **Two masking shapes**: rectangle and circle, with configurable rounded corners for rectangles
-- **Three processing modes**: `Gaussian`, `Pixelate`, and `Inpaint`
-- **Auto save**: overwrite original files or export to `blurred_output`
-- **Fast browsing**: `A / D` for previous and next image, hold keys for continuous flipping
-- **Subfolder navigation**: switch through sibling subfolders by name order, useful for large dataset trees
-- **Undo and reload**: `Ctrl + Z` to undo, `R` to reload the current image
-- **High-DPI friendly**: tuned for Windows high-resolution displays
-- **Modern desktop UI**: built with `PySide6`, with light/dark themes, settings panel, and unified controls
-- **Performance aware**: preview cache, neighbor prefetch, and in-memory canvas refresh reduce waiting time
+<p align="center">
+  <a href="https://github.com/verbalPoem/wukuang/releases"><strong>Download Latest Release &raquo;</strong></a>
+  <br />
+  <br />
+  <a href="#whats-new">What's New</a>
+  &middot;
+  <a href="#overview">Overview</a>
+  &middot;
+  <a href="#features">Features</a>
+  &middot;
+  <a href="#quick-start">Quick Start</a>
+  &middot;
+  <a href="#development">Development</a>
+</p>
 
-## What's New in v1.0.4
+<img src="./assets/release-cover.png" width="100%" />
 
-- Streamlined subfolder navigation. `Previous Folder / Next Folder` now works only on the direct child folders under the parent directory, sorted by name
-- Removed automatic sibling-folder prescan when opening a directory, which greatly improves responsiveness on external drives
-- Parent-folder progress is now counted manually through a dedicated button
-- Fixed freezes, white screens, and unavailable folder navigation buttons caused by aggressive parent-folder scanning
+## What's New
 
-## What's New in v1.0.3
+### v1.0.5
 
-- Added a third selection mode: fixed-size single-click masking
-- Added a live blue preview box that follows the mouse cursor
-- The preview box is centered on the cursor, so users always know the exact masking size before clicking
-- Fixed width and height can be adjusted in real time, and the preview updates immediately
-- Added preset sizes: `64`, `96`, and `128`, while keeping custom size support
+- Added bilingual UI switching with `🇨🇳 ZH / 🇺🇸 EN`
+- Main window, settings dialog, about dialog, and status messages now support both Chinese and English
+- Replaced the thin previous/next arrows with clearer emoji-style navigation buttons
+- Fixed continuous browsing when long-pressing the top `A / D` buttons with the mouse
+- Refined the README and marketing assets to remove placeholder-like AI-looking text
 
-## What's New in v1.0.2
+### v1.0.4
 
-- Added `Previous Folder / Next Folder` to navigate sibling subfolders under the same parent folder
-- Subfolders are sorted by name for stable navigation
-- Added `Shift + A / Shift + D` for folder switching
-- App now starts maximized by default for large-batch workflows
-- Fixed sidebar layout issues that appeared after switching subfolders
-- Refreshed app icon and packaging assets for a cleaner desktop appearance
+- Streamlined sibling-folder navigation to work only on direct child folders sorted by name
+- Removed automatic sibling-folder prescan when opening a folder, improving responsiveness on external drives
+- Parent-folder progress is now counted manually
 
-## Why This Project
+### v1.0.3
 
-`Wukuang` is designed to be a focused tool for batch image desensitization instead of a heavy, general-purpose image editor.
+- Added fixed-size single-click masking mode
+- Added a live blue preview box that follows the cursor
+- Added preset sizes: `64 / 96 / 128`
 
-It is optimized for highly repetitive work like this:
+## Overview
 
-- open an image
-- mark faces, body parts, text, or privacy-sensitive regions
-- process immediately
-- save automatically
-- move to the next image
+`Wukuang` is not a general-purpose image editor. It is a focused desktop workstation built for one specific workflow:
 
-The main goal is to reduce repetitive clicks, avoid unnecessary popups, and keep the operator in a steady review rhythm.
+1. Use `YOLO` or another detection model to remove most sensitive regions
+2. Open a folder locally
+3. Quickly clean up the remaining missed areas by hand
+4. Save and move on to the next image
+
+It is especially useful for:
+
+- dataset desensitization
+- image review workflows
+- face blurring
+- privacy protection
+- sensitive-region masking
+- manual cleanup after automatic detection
 
 ## Preview
 
-![Wukuang Preview](./assets/app-preview.png)
+<img src="./assets/app-preview.png" width="100%" />
+
+## Features
+
+- Three selection modes: drag, two-click point mode, and fixed-size single-click mode
+- Two shapes: rectangle and circle
+- Rounded rectangle support with matching live preview
+- Three processing modes: Gaussian, Pixelate, and Inpaint
+- Auto save with overwrite or `blurred_output` export
+- `A / D` image browsing with long-press repeat
+- `Shift + A / Shift + D` sibling-folder navigation
+- `Ctrl + Z` undo and `R` reload
+- High-DPI friendly Windows desktop UI
+- Light / dark themes and bilingual UI
+
+<details>
+<summary><strong>Why this tool matters</strong></summary>
+
+In many real pipelines, the expensive part is not model inference itself.  
+The painful part is the final manual cleanup after the model has already handled 80% to 90% of the job.
+
+`Wukuang` is designed exactly for that final human-in-the-loop stage.
+
+</details>
+
+<details>
+<summary><strong>Workflow details</strong></summary>
+
+- drag and release
+- two-click point confirmation
+- fixed-size one-click masking
+- real-time blue preview box
+- sibling subfolder navigation
+- manual parent-folder progress counting
+- highlighted status feedback
+- preview cache and neighbor prefetch
+
+</details>
 
 ## Quick Start
 
 ### 1. Prepare an image folder
 
-- Put the images you want to process into one folder
+- Put the images you want to process into one subfolder
 - Supported formats: `jpg`, `jpeg`, `png`, `bmp`, `webp`
 
-### 2. Launch the app and choose a folder
+### 2. Open a folder
 
-- Start `Wukuang`
+- Launch the app
 - Click `Open Image Folder`
-- Select the folder you want to process
+- Choose the folder you want to process
 
 ### 3. Start masking
 
-- Select the region you want to blur
-- Release the mouse or click the second point to confirm
-- Press `D` for the next image and `A` for the previous one
-- If you need repeated fixed-size masking, switch to `Fixed` mode and click once per target
+- Use drag mode or point mode
+- Or switch to fixed-size mode and click repeatedly for fast masking
+- Press `D` for next image and `A` for previous image
+- Press `Shift + D / Shift + A` to move between sibling folders
 
-### 4. Choose the right processing mode
+### 4. Choose a processing style
 
-- `Gaussian`: best for faces and body-sensitive areas
-- `Pixelate`: better for stronger visual blocking
-- `Inpaint`: useful for removing small text, watermarks, or local overlays
-
-### 5. Undo when needed
-
-- Press `Ctrl + Z` to undo the last change immediately
-- The status bar will highlight the undo action
+- `Gaussian`: best for faces and general sensitive areas
+- `Pixelate`: stronger blocking effect
+- `Inpaint`: useful for removing text, watermarks, and small overlays
 
 ## Shortcuts
 
 | Action | Shortcut |
-|------|--------|
+| :--- | :--- |
 | Previous image | `A` |
 | Next image | `D` |
 | Continuous flipping | Hold `A / D` |
 | Previous subfolder | `Shift + A` |
 | Next subfolder | `Shift + D` |
-| Count parent-folder progress | Sidebar button |
-| Undo last change | `Ctrl + Z` |
+| Undo | `Ctrl + Z` |
 | Reload current image | `R` |
 | Open folder | `Ctrl + O` |
 
 ## Development
 
-### Recommended environment
+### Environment
 
 - Windows 10 / 11
 - Python 3.12
-- For high-DPI monitors, keep normal Windows scaling enabled
+- PySide6
+- OpenCV
+- Pillow
+- NumPy
 
 ### Run from source
 
@@ -168,7 +172,7 @@ The main goal is to reduce repetitive clicks, avoid unnecessary popups, and keep
 python face_blur_studio.py
 ```
 
-### Build EXE
+### Build Windows EXE
 
 ```powershell
 build_exe.bat
@@ -184,50 +188,10 @@ python scripts\generate_brand_assets.py
 pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name BlurStudio face_blur_studio.py
 ```
 
-### Common commands
+## Docs
 
-| Command | Description |
-|------|------|
-| `python face_blur_studio.py` | Run the desktop app |
-| `py -3.12 -m py_compile wukuang_qt.py` | Syntax check |
-| `build_exe.bat` | Build Windows EXE |
-
-### Tech stack
-
-| Layer | Technology |
-|------|------|
-| Desktop GUI | [PySide6](https://doc.qt.io/qtforpython-6/) |
-| Image processing | [OpenCV](https://opencv.org/) + [Pillow](https://python-pillow.org/) + [NumPy](https://numpy.org/) |
-| System integration | `ctypes` |
-| Packaging | [PyInstaller](https://pyinstaller.org/) |
-| Language | [Python 3.12](https://www.python.org/) |
-
-### Current architecture
-
-```text
-┌─────────────────────────────────────────────────────────┐
-│                        Wukuang                          │
-│                                                         │
-│  ┌──────────────────┐         ┌──────────────────────┐  │
-│  │   PySide6 UI     │         │   Image Pipeline     │  │
-│  │                  │         │                      │  │
-│  │  Sidebar         │         │  Pillow load/save    │  │
-│  │  Settings Dialog │◄──────► │  OpenCV blur/inpaint │  │
-│  │  Canvas Preview  │         │  NumPy mask process  │  │
-│  │  Status Bar      │         │  Preview cache       │  │
-│  └──────────────────┘         └──────────────────────┘  │
-│                                                         │
-│                  Local image folders                    │
-└─────────────────────────────────────────────────────────┘
-```
-
-### Image save policy
-
-- `PNG` is saved losslessly
-- `JPEG / JPG` is saved with high-quality settings:
-  `quality=100`, `subsampling=0`, and no extra optimization
-
-Note that `JPEG` is still a lossy format by nature, so strict lossless overwrite is impossible.
+- [v1.0.4 Development Guide](./docs/Wukuang-v1.0.4-开发文档.md)
+- [GitHub Releases](https://github.com/verbalPoem/wukuang/releases)
 
 ## Project Structure
 
@@ -237,50 +201,47 @@ assets/
   app-icon.png
   app-preview.png
   release-cover.png
+  screenshot-sheet.png
 scripts/
   generate_brand_assets.py
+docs/
+  Wukuang-v1.0.4-开发文档.md
 face_blur_studio.py
 wukuang_qt.py
 build_exe.bat
 requirements.txt
-LICENSE
 README.md
 README.en.md
+LICENSE
 ```
+
+## Tech Stack
+
+- GUI: `PySide6`
+- Image processing: `OpenCV` + `Pillow` + `NumPy`
+- System integration: `ctypes`
+- Packaging: `PyInstaller`
+- Language: `Python 3.12`
 
 ## Notes
 
-- `Inpaint` works best for small text, watermarks, and local overlays, not for large-area reconstruction
-- If the source image is `JPEG`, overwrite mode is still limited by JPEG's lossy nature
-- Very large images may still take some time on first load, though preview caching and delayed prefetch already reduce most of the perceived lag
+- `Inpaint` is best for small-area repair, not large-scale reconstruction
+- Overwriting `JPEG` images is still limited by the format's lossy nature
+- Very large images may still take time on first load, although preview caching and delayed prefetch already reduce most visible lag
 
-## Author
-
-Click the logo in the top-left corner inside the app to see the author dialog.
+## Authors
 
 - Developers: `cca&qyx&codex`
-- Goal: make batch image masking faster and more comfortable for long review sessions
+- Goal: make batch image masking faster and smoother during long review sessions
 
 ## License
 
 This project is licensed under the [MIT License](./LICENSE).
 
-## Future roadmap
+## Roadmap
 
-- Auto face detection and pre-blur
-- Multi-box batch confirmation
-- Zoom and pan for the canvas
-- More shapes, including polygon support
-- Custom shortcuts
-- A more complete project settings system
+- model-assisted pre-blur workflow
+- multi-box batch confirmation
+- stronger zoom/pan canvas interaction
+- more shapes and shortcut customization
 
-[python-badge]: https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white
-[python-url]: https://www.python.org/
-[pyside-badge]: https://img.shields.io/badge/PySide6-Qt_for_Python-41CD52?style=for-the-badge&logo=qt&logoColor=white
-[pyside-url]: https://doc.qt.io/qtforpython-6/
-[opencv-badge]: https://img.shields.io/badge/OpenCV-Image_Processing-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white
-[opencv-url]: https://opencv.org/
-[pillow-badge]: https://img.shields.io/badge/Pillow-Image_IO-8CAAE6?style=for-the-badge
-[pillow-url]: https://python-pillow.org/
-[pyinstaller-badge]: https://img.shields.io/badge/PyInstaller-Windows_EXE-EE4C2C?style=for-the-badge
-[pyinstaller-url]: https://pyinstaller.org/

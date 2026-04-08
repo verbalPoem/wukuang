@@ -152,10 +152,10 @@ def build_release_cover() -> Image.Image:
         x += width + 16
 
     draw.rounded_rectangle((1120, 610, 1620, 860), radius=30, fill=(13, 29, 48))
-    draw.text((1170, 655), "开源仓库推荐名", fill=(242, 247, 255), font=get_font(28, bold=True))
-    draw.text((1170, 710), "wukuang", fill=(94, 226, 185), font=get_font(42, bold=True))
+    draw.text((1170, 655), "Local desktop workflow", fill=(242, 247, 255), font=get_font(28, bold=True))
+    draw.text((1170, 710), "Fast. Focused. Private.", fill=(94, 226, 185), font=get_font(42, bold=True))
     desc_font = get_font(22)
-    for idx, line in enumerate(wrap_lines(draw, "适合 GitHub 展示、Release 封面与下载页说明。", desc_font, 380)):
+    for idx, line in enumerate(wrap_lines(draw, "Built for dataset desensitization, image review, and human-in-the-loop cleanup.", desc_font, 380)):
         draw.text((1170, 780 + idx * 28), line, fill=(173, 196, 221), font=desc_font)
     return canvas
 
@@ -167,20 +167,20 @@ def build_screenshot_sheet() -> Image.Image:
 
     title_font = get_font(70, bold=True)
     sub_font = get_font(26)
-    draw.text((95, 90), "雾框发布页素材", fill=(246, 250, 255), font=title_font)
-    subtitle = "图标、主界面和工作流程素材可直接用于 GitHub README 或 Release 页面。"
+    draw.text((95, 90), "Wukuang Media Kit", fill=(246, 250, 255), font=title_font)
+    subtitle = "Brand and interface assets prepared for the GitHub README and release page."
     for idx, line in enumerate(wrap_lines(draw, subtitle, sub_font, 1460)):
         draw.text((95, 185 + idx * 34), line, fill=(156, 184, 215), font=sub_font)
 
     assets = {
-        "应用图标": ASSETS / "app-icon-preview.png",
-        "界面预览": ASSETS / "app-preview.png",
-        "工作流程": ASSETS / "workflow.png",
+        "App Icon": ASSETS / "app-icon-preview.png",
+        "Main Interface": ASSETS / "app-preview.png",
+        "Release Cover": ASSETS / "release-cover.png",
     }
     positions = [
-        ("应用图标", (95, 270, 840, 620)),
-        ("界面预览", (960, 270, 1705, 620)),
-        ("工作流程", (95, 690, 1705, 1070)),
+        ("App Icon", (95, 270, 840, 620)),
+        ("Main Interface", (960, 270, 1705, 620)),
+        ("Release Cover", (95, 690, 1705, 1070)),
     ]
 
     label_font = get_font(28, bold=True)
