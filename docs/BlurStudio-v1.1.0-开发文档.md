@@ -1,4 +1,4 @@
-# Wukuang v1.0.4 软件开发文档
+# BlurStudio v1.1.0 软件开发文档
 
 ## 1. 文档说明
 
@@ -11,15 +11,15 @@
 
 文档目标：
 
-- 从工程角度系统说明 `Wukuang v1.0.4` 的产品定位、架构设计、核心模块与关键算法
+- 从工程角度系统说明 `BlurStudio v1.1.0` 的产品定位、架构设计、核心模块与关键算法
 - 给出主要功能的实现思路、状态流转、交互链路和对应代码位置
 - 为后续扩展、测试、打包、性能调优和工业化改造提供基础设计资料
 
 当前版本基线：
 
-- 产品版本：`v1.0.4`
+- 产品版本：`v1.1.0`
 - 主要入口：`face_blur_studio.py`
-- 核心实现：`wukuang_qt.py`
+- 核心实现：`blurstudio_qt.py`
 - GUI 框架：`PySide6`
 - 图像处理：`OpenCV + Pillow + NumPy`
 - 打包方案：`PyInstaller`
@@ -28,7 +28,7 @@
 
 ## 2. 产品定位与设计目标
 
-`Wukuang` 是一个面向“批量图片去敏感 / 打码 / 人工补漏”的本地桌面工具。它不是通用型修图软件，而是围绕“连续处理大量图片”的工作流进行设计。
+`BlurStudio` 是一个面向“批量图片去敏感 / 打码 / 人工补漏”的本地桌面工具。它不是通用型修图软件，而是围绕“连续处理大量图片”的工作流进行设计。
 
 其设计目标有三个：
 
@@ -52,7 +52,7 @@
 
 ```mermaid
 flowchart LR
-    A["face_blur_studio.py<br/>启动壳"] --> B["wukuang_qt.py<br/>主程序入口"]
+    A["face_blur_studio.py<br/>启动壳"] --> B["blurstudio_qt.py<br/>主程序入口"]
     B --> C["系统适配层<br/>DPI / 标题栏 / 资源路径"]
     B --> D["配置层<br/>SettingsStore"]
     B --> E["UI 组件层<br/>CardFrame / LogoBadge / SegmentedControl"]
@@ -70,14 +70,14 @@ flowchart LR
 ```text
 codex/
 ├─ face_blur_studio.py          # 启动入口
-├─ wukuang_qt.py                # 主应用与核心逻辑
+├─ blurstudio_qt.py             # 主应用与核心逻辑
 ├─ build_exe.bat                # Windows 打包脚本
 ├─ requirements.txt             # 运行依赖
 ├─ assets/                      # 图标、README 展示图等资源
 ├─ scripts/
 │  └─ generate_brand_assets.py  # 品牌资源生成脚本
 └─ docs/
-   └─ Wukuang-v1.0.4-开发文档.md
+   └─ BlurStudio-v1.1.0-开发文档.md
 ```
 
 ### 3.2 模块职责划分
@@ -105,7 +105,7 @@ codex/
 文件：[face_blur_studio.py](/C:/Users/26044/Desktop/codex/face_blur_studio.py)
 
 ```python
-from wukuang_qt import main
+from blurstudio_qt import main
 
 
 if __name__ == "__main__":
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
 ### 4.2 资源路径解析
 
-文件：[wukuang_qt.py](/C:/Users/26044/Desktop/codex/wukuang_qt.py)
+文件：[blurstudio_qt.py](/C:/Users/26044/Desktop/codex/blurstudio_qt.py)
 
 ```python
 def resource_path(*parts: str) -> Path:
@@ -1150,7 +1150,7 @@ sequenceDiagram
 
 ### 20.1 代码结构层面
 
-- 将 `wukuang_qt.py` 拆分为多模块：
+- 将 `blurstudio_qt.py` 拆分为多模块：
   - `app/main_window.py`
   - `ui/widgets/segmented.py`
   - `ui/widgets/canvas.py`
@@ -1182,7 +1182,7 @@ sequenceDiagram
 
 ## 21. 结语
 
-`Wukuang v1.0.4` 的实现重点不在“功能堆积”，而在于围绕真实数据集去敏感工作流做交互和性能上的取舍。
+`BlurStudio v1.1.0` 的实现重点不在“功能堆积”，而在于围绕真实数据集去敏感工作流做交互和性能上的取舍。
 
 它的核心工程思想可以概括为三点：
 
@@ -1196,4 +1196,3 @@ sequenceDiagram
 - 缩略图导航与项目会话
 - 自动检测模型联动
 - 更系统化的测试与模块拆分
-

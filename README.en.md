@@ -1,11 +1,11 @@
 <div align="center">
   <p>
-    <img alt="Wukuang" height="140px" src="./assets/app-icon.png">
+    <img alt="BlurStudio" height="140px" src="./assets/app-icon.png">
   </p>
 
 [简体中文](./README.md) | [English](./README.en.md)
 
-  <h1>Wukuang</h1>
+  <h1>BlurStudio</h1>
   <p>A local desktop tool for dataset desensitization, batch image blurring, and manual sensitive-region cleanup</p>
 </div>
 
@@ -37,9 +37,17 @@
 
 ## What's New
 
+### v1.1.0
+
+- Unified the product branding as `BlurStudio`
+- Simplified the settings dialog to low-frequency preferences only, keeping theme and language there while leaving workflow controls in the sidebar
+- Changed language switching to pure flag buttons: `🇨🇳 / 🇺🇸`
+- Replaced the thin previous/next arrows with clearer emoji-style navigation buttons
+- Fixed continuous browsing when long-pressing the top `A / D` buttons with the mouse
+
 ### v1.0.5
 
-- Added bilingual UI switching with `🇨🇳 ZH / 🇺🇸 EN`
+- Added bilingual UI switching with `🇨🇳 / 🇺🇸`
 - Main window, settings dialog, about dialog, and status messages now support both Chinese and English
 - Replaced the thin previous/next arrows with clearer emoji-style navigation buttons
 - Fixed continuous browsing when long-pressing the top `A / D` buttons with the mouse
@@ -59,7 +67,7 @@
 
 ## Overview
 
-`Wukuang` is not a general-purpose image editor. It is a focused desktop workstation built for one specific workflow:
+`BlurStudio` is not a general-purpose image editor. It is a focused desktop workstation built for one specific workflow:
 
 1. Use `YOLO` or another detection model to remove most sensitive regions
 2. Open a folder locally
@@ -78,7 +86,7 @@ It is especially useful for:
 ## Preview
 
 <a href="./assets/app-preview.mp4">
-  <img src="./assets/app-preview-poster.png" width="100%" alt="Wukuang interface preview video">
+  <img src="./assets/app-preview-poster.png" width="100%" alt="BlurStudio interface preview video">
 </a>
 
 <p align="center"><sub>Click the preview image to open the demo video</sub></p>
@@ -102,7 +110,7 @@ It is especially useful for:
 In many real pipelines, the expensive part is not model inference itself.  
 The painful part is the final manual cleanup after the model has already handled 80% to 90% of the job.
 
-`Wukuang` is designed exactly for that final human-in-the-loop stage.
+`BlurStudio` is designed exactly for that final human-in-the-loop stage.
 
 </details>
 
@@ -194,7 +202,7 @@ pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name Blu
 
 ## Docs
 
-- [v1.0.4 Development Guide](./docs/Wukuang-v1.0.4-开发文档.md)
+- [v1.1.0 Development Guide](./docs/BlurStudio-v1.1.0-开发文档.md)
 - [GitHub Releases](https://github.com/verbalPoem/wukuang/releases)
 
 ## Project Structure
@@ -210,9 +218,9 @@ assets/
 scripts/
   generate_brand_assets.py
 docs/
-  Wukuang-v1.0.4-开发文档.md
+  BlurStudio-v1.1.0-开发文档.md
 face_blur_studio.py
-wukuang_qt.py
+blurstudio_qt.py
 build_exe.bat
 requirements.txt
 README.md

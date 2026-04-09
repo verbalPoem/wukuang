@@ -31,8 +31,8 @@ from PySide6.QtWidgets import QApplication, QDialog, QFrame, QFileDialog, QGraph
 
 
 SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
-APP_TITLE = "雾框"
-SETTINGS_PATH = Path(os.getenv("APPDATA", Path.home())) / "Wukuang" / "settings.json"
+APP_TITLE = "BlurStudio"
+SETTINGS_PATH = Path(os.getenv("APPDATA", Path.home())) / "BlurStudio" / "settings.json"
 DEFAULT_SETTINGS = {
     "theme_mode": "light",
     "ui_language": "zh",
@@ -50,8 +50,8 @@ DEFAULT_SETTINGS = {
 
 I18N = {
     "zh": {
-        "app_title": "雾框",
-        "tagline": "一个为批量图片打码而生的本地桌面工作台",
+        "app_title": "BlurStudio",
+        "tagline": "面向批量图片打码与数据集去敏感的本地桌面工具",
         "dir_progress_title": "目录与进度",
         "open_folder": "打开图片目录",
         "rechoose_folder": "重新选择",
@@ -106,8 +106,8 @@ I18N = {
         "off": "关闭",
         "on": "开启",
         "preset_custom": "自定",
-        "prev_btn": "⏪ A",
-        "next_btn": "D ⏩",
+        "prev_btn": "⏮️ A",
+        "next_btn": "D ⏭️",
         "settings_btn": "⚙",
         "choose_folder_dialog": "选择待处理图片文件夹",
         "choose_folder_failed": "打开目录选择器失败：{error}",
@@ -128,25 +128,23 @@ I18N = {
         "undo_empty": "当前没有可撤销的操作。",
         "undo_done": "已撤销上一步。",
         "settings_title": "偏好设置",
-        "settings_header": "⚙ 偏好设置",
-        "settings_subtitle": "调整主题、语言、翻页和模糊参数，所有更改会即时生效。",
-        "group_ui": "界面与交互",
-        "group_blur": "模糊与修复",
-        "group_perf": "性能",
+        "settings_header": "⚙ 界面设置",
+        "settings_subtitle": "放一些不常改的偏好项，例如语言和深浅主题。",
+        "group_ui": "界面偏好",
         "fixed_size_box": "固定大小框",
         "width": "宽度",
         "height": "高度",
         "prefetch": "预加载邻近图片数",
-        "about_title": "关于 雾框",
-        "about_name": "雾框",
+        "about_title": "关于 BlurStudio",
+        "about_name": "BlurStudio",
         "about_dev": "开发者：cca&qyx&codex",
         "about_goal": "开发目的：让批量图片打码流程更高效、更顺手，适合长时间连续处理。",
         "about_ok": "知道了",
         "canvas_empty": "选择一个图片文件夹开始处理",
     },
     "en": {
-        "app_title": "Wukuang",
-        "tagline": "A local desktop workstation for batch image blurring",
+        "app_title": "BlurStudio",
+        "tagline": "A local desktop tool for batch image blurring and dataset desensitization",
         "dir_progress_title": "Folders & Progress",
         "open_folder": "Open Image Folder",
         "rechoose_folder": "Choose Again",
@@ -201,8 +199,8 @@ I18N = {
         "off": "Off",
         "on": "On",
         "preset_custom": "Custom",
-        "prev_btn": "⏪ A",
-        "next_btn": "D ⏩",
+        "prev_btn": "⏮️ A",
+        "next_btn": "D ⏭️",
         "settings_btn": "⚙",
         "choose_folder_dialog": "Choose image folder",
         "choose_folder_failed": "Failed to open folder picker: {error}",
@@ -223,17 +221,15 @@ I18N = {
         "undo_empty": "Nothing to undo.",
         "undo_done": "Undid the last action.",
         "settings_title": "Preferences",
-        "settings_header": "⚙ Preferences",
-        "settings_subtitle": "Adjust theme, language, browsing, and blur settings with instant updates.",
-        "group_ui": "Interface & Interaction",
-        "group_blur": "Blur & Repair",
-        "group_perf": "Performance",
+        "settings_header": "⚙ Interface Settings",
+        "settings_subtitle": "Only low-frequency preferences live here, such as language and theme.",
+        "group_ui": "Interface Preferences",
         "fixed_size_box": "Fixed-size Box",
         "width": "Width",
         "height": "Height",
         "prefetch": "Neighbor Prefetch Count",
-        "about_title": "About Wukuang",
-        "about_name": "Wukuang",
+        "about_title": "About BlurStudio",
+        "about_name": "BlurStudio",
         "about_dev": "Developers: cca&qyx&codex",
         "about_goal": "Purpose: make batch image masking faster and smoother for long review sessions.",
         "about_ok": "Close",
@@ -754,163 +750,16 @@ class SettingsDialog(QWidget):
         self.language_segment = self._section(
             layout,
             tr(self.language, "language"),
-            [("🇨🇳 ZH", "zh"), ("🇺🇸 EN", "en")],
+            [("🇨🇳", "zh"), ("🇺🇸", "en")],
             settings.get("ui_language", DEFAULT_SETTINGS["ui_language"]),
         )
-        self.draw_segment = self._section(
-            layout,
-            tr(self.language, "draw_mode"),
-            [(tr(self.language, "draw_drag"), "drag"), (tr(self.language, "draw_point"), "point"), (tr(self.language, "draw_fixed"), "fixed")],
-            settings["draw_mode"],
-        )
-        self.shape_segment = self._section(
-            layout,
-            tr(self.language, "shape_mode"),
-            [(tr(self.language, "shape_rect"), "rect"), (tr(self.language, "shape_circle"), "circle")],
-            settings["shape_mode"],
-        )
-        self.save_segment = self._section(
-            layout,
-            tr(self.language, "save_mode"),
-            [(tr(self.language, "save_overwrite"), "overwrite"), (tr(self.language, "save_separate"), "separate")],
-            settings["save_mode"],
-        )
-        self.auto_segment = self._section(
-            layout,
-            tr(self.language, "auto_advance"),
-            [(tr(self.language, "off"), False), (tr(self.language, "on"), True)],
-            settings["auto_advance"],
-        )
-        layout.addWidget(self._group_title(tr(self.language, "group_blur")))
-        self.blur_segment = self._section(
-            layout,
-            tr(self.language, "blur_style"),
-            [(tr(self.language, "blur_gaussian"), "gaussian"), (tr(self.language, "blur_pixelate"), "pixelate"), (tr(self.language, "blur_inpaint"), "inpaint")],
-            settings["blur_style"],
-        )
-        self.blur_segment.set_tooltip_for_value("inpaint", tr(self.language, "inpaint_tooltip"))
-
-        kernel_card = CardFrame()
-        kernel_layout = QVBoxLayout(kernel_card)
-        kernel_layout.setContentsMargins(16, 16, 16, 16)
-        kernel_layout.setSpacing(10)
-        kernel_layout.addWidget(self._label(tr(self.language, "blur_strength")))
-        row = QHBoxLayout()
-        self.kernel_slider = QSlider(Qt.Orientation.Horizontal)
-        self.kernel_slider.setRange(15, 121)
-        self.kernel_slider.setValue(int(settings["blur_kernel"]))
-        self.kernel_slider.setFixedHeight(28)
-        self.kernel_value = QLabel(str(self.kernel_slider.value()))
-        self.kernel_value.setObjectName("valueChip")
-        row.addWidget(self.kernel_slider)
-        row.addWidget(self.kernel_value)
-        kernel_layout.addLayout(row)
-        layout.addWidget(kernel_card)
-
-        corner_card = CardFrame()
-        corner_layout = QVBoxLayout(corner_card)
-        corner_layout.setContentsMargins(16, 16, 16, 16)
-        corner_layout.setSpacing(10)
-        corner_layout.addWidget(self._label(tr(self.language, "corner_radius")))
-        corner_row = QHBoxLayout()
-        self.corner_slider = QSlider(Qt.Orientation.Horizontal)
-        self.corner_slider.setRange(0, 120)
-        self.corner_slider.setValue(int(settings.get("corner_radius", DEFAULT_SETTINGS["corner_radius"])))
-        self.corner_slider.setFixedHeight(28)
-        self.corner_value = QLabel(str(self.corner_slider.value()))
-        self.corner_value.setObjectName("valueChip")
-        corner_row.addWidget(self.corner_slider)
-        corner_row.addWidget(self.corner_value)
-        corner_layout.addLayout(corner_row)
-        layout.addWidget(corner_card)
-
-        fixed_card = CardFrame()
-        fixed_layout = QVBoxLayout(fixed_card)
-        fixed_layout.setContentsMargins(16, 16, 16, 16)
-        fixed_layout.setSpacing(10)
-        fixed_layout.addWidget(self._label(tr(self.language, "fixed_size_box")))
-        fixed_width_row = QHBoxLayout()
-        fixed_width_row.addWidget(QLabel(tr(self.language, "width"), objectName="miniTitle"))
-        fixed_width_row.addStretch(1)
-        self.fixed_width_value = QLabel(str(int(settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"]))))
-        self.fixed_width_value.setObjectName("valueChip")
-        fixed_width_row.addWidget(self.fixed_width_value)
-        fixed_layout.addLayout(fixed_width_row)
-        self.fixed_width_slider = QSlider(Qt.Orientation.Horizontal)
-        self.fixed_width_slider.setRange(20, 1200)
-        self.fixed_width_slider.setValue(int(settings.get("fixed_box_width", DEFAULT_SETTINGS["fixed_box_width"])))
-        self.fixed_width_slider.setFixedHeight(28)
-        fixed_layout.addWidget(self.fixed_width_slider)
-        fixed_height_row = QHBoxLayout()
-        fixed_height_row.addWidget(QLabel(tr(self.language, "height"), objectName="miniTitle"))
-        fixed_height_row.addStretch(1)
-        self.fixed_height_value = QLabel(str(int(settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"]))))
-        self.fixed_height_value.setObjectName("valueChip")
-        fixed_height_row.addWidget(self.fixed_height_value)
-        fixed_layout.addLayout(fixed_height_row)
-        self.fixed_height_slider = QSlider(Qt.Orientation.Horizontal)
-        self.fixed_height_slider.setRange(20, 1200)
-        self.fixed_height_slider.setValue(int(settings.get("fixed_box_height", DEFAULT_SETTINGS["fixed_box_height"])))
-        self.fixed_height_slider.setFixedHeight(28)
-        fixed_layout.addWidget(self.fixed_height_slider)
-        self.fixed_preset_segment = SegmentedControl([("64", "64"), ("96", "96"), ("128", "128"), (tr(self.language, "preset_custom"), "custom")], "custom")
-        self.fixed_preset_segment.set_value(self._fixed_preset_value(), emit=False)
-        fixed_layout.addWidget(self.fixed_preset_segment)
-        layout.addWidget(fixed_card)
-
-        layout.addWidget(self._group_title(tr(self.language, "group_perf")))
-        prefetch_card = CardFrame()
-        prefetch_layout = QVBoxLayout(prefetch_card)
-        prefetch_layout.setContentsMargins(16, 16, 16, 16)
-        prefetch_layout.setSpacing(10)
-        prefetch_layout.addWidget(self._label(tr(self.language, "prefetch")))
-        prefetch_row = QHBoxLayout()
-        self.prefetch_slider = QSlider(Qt.Orientation.Horizontal)
-        self.prefetch_slider.setRange(2, 10)
-        self.prefetch_slider.setValue(int(settings["prefetch_span"]))
-        self.prefetch_slider.setFixedHeight(28)
-        self.prefetch_value = QLabel(str(self.prefetch_slider.value()))
-        self.prefetch_value.setObjectName("valueChip")
-        prefetch_row.addWidget(self.prefetch_slider)
-        prefetch_row.addWidget(self.prefetch_value)
-        prefetch_layout.addLayout(prefetch_row)
-        layout.addWidget(prefetch_card)
+        self.language_segment.set_tooltip_for_value("zh", "Chinese")
+        self.language_segment.set_tooltip_for_value("en", "English")
 
         layout.addStretch(1)
 
-        for segment in (
-            self.theme_segment,
-            self.language_segment,
-            self.draw_segment,
-            self.shape_segment,
-            self.blur_segment,
-            self.save_segment,
-            self.auto_segment,
-            self.fixed_preset_segment,
-        ):
+        for segment in (self.theme_segment, self.language_segment):
             segment.changed.connect(self._emit_change)
-        self.kernel_slider.valueChanged.connect(lambda value: self.kernel_value.setText(str(value)))
-        self.kernel_slider.valueChanged.connect(self._emit_change)
-        self.corner_slider.valueChanged.connect(lambda value: self.corner_value.setText(str(value)))
-        self.corner_slider.valueChanged.connect(self._emit_change)
-        self.fixed_width_slider.valueChanged.connect(lambda value: self.fixed_width_value.setText(str(value)))
-        self.fixed_width_slider.valueChanged.connect(self._emit_change)
-        self.fixed_height_slider.valueChanged.connect(lambda value: self.fixed_height_value.setText(str(value)))
-        self.fixed_height_slider.valueChanged.connect(self._emit_change)
-        self.prefetch_slider.valueChanged.connect(lambda value: self.prefetch_value.setText(str(value)))
-        self.prefetch_slider.valueChanged.connect(self._emit_change)
-
-    def _label(self, text: str) -> QLabel:
-        label = QLabel(text)
-        label.setObjectName("sectionTitle")
-        return label
-
-    def _fixed_preset_value(self) -> str:
-        width = self.fixed_width_slider.value()
-        height = self.fixed_height_slider.value()
-        if width == height and width in {64, 96, 128}:
-            return str(width)
-        return "custom"
 
     def _group_title(self, text: str) -> QLabel:
         label = QLabel(text)
@@ -929,31 +778,10 @@ class SettingsDialog(QWidget):
         return segment
 
     def _emit_change(self) -> None:
-        preset = self.fixed_preset_segment.value()
-        if preset != "custom":
-            size = int(preset)
-            if self.fixed_width_slider.value() != size:
-                self.fixed_width_slider.setValue(size)
-            if self.fixed_height_slider.value() != size:
-                self.fixed_height_slider.setValue(size)
-        else:
-            self.fixed_preset_segment.set_value(self._fixed_preset_value(), emit=False)
-        if self.kernel_slider.value() % 2 == 0:
-            self.kernel_slider.setValue(self.kernel_slider.value() + 1)
         self.changed.emit(
             {
                 "theme_mode": self.theme_segment.value(),
                 "ui_language": self.language_segment.value(),
-                "draw_mode": self.draw_segment.value(),
-                "shape_mode": self.shape_segment.value(),
-                "blur_style": self.blur_segment.value(),
-                "save_mode": self.save_segment.value(),
-                "auto_advance": self.auto_segment.value(),
-                "blur_kernel": self.kernel_slider.value(),
-                "corner_radius": self.corner_slider.value(),
-                "fixed_box_width": self.fixed_width_slider.value(),
-                "fixed_box_height": self.fixed_height_slider.value(),
-                "prefetch_span": self.prefetch_slider.value(),
             }
         )
 
@@ -1021,7 +849,7 @@ class MainWindow(QMainWindow):
         return [("Light", "light"), ("Dark", "dark")]
 
     def _language_options(self) -> list[tuple[str, object]]:
-        return [("🇨🇳 ZH", "zh"), ("🇺🇸 EN", "en")]
+        return [("🇨🇳", "zh"), ("🇺🇸", "en")]
 
     def _draw_options(self) -> list[tuple[str, object]]:
         return [(self._t("draw_drag"), "drag"), (self._t("draw_point"), "point"), (self._t("draw_fixed"), "fixed")]
@@ -1147,18 +975,14 @@ class MainWindow(QMainWindow):
         quick_layout.setSpacing(8)
         self.quick_title_label = QLabel(self._t("quick_controls"), objectName="sectionTitle")
         quick_layout.addWidget(self.quick_title_label)
-        self.theme_segment = SegmentedControl(self._theme_options(), self.settings["theme_mode"])
-        self.language_segment = SegmentedControl(self._language_options(), self._lang())
         self.draw_segment = SegmentedControl(self._draw_options(), self.settings["draw_mode"])
         self.shape_segment = SegmentedControl(self._shape_options(), self.settings["shape_mode"])
         self.blur_segment = SegmentedControl(self._blur_options(), self.settings["blur_style"])
         self.blur_segment.set_tooltip_for_value("inpaint", self._t("inpaint_tooltip"))
-        self.theme_row = self._build_setting_row(self._t("theme"), self.theme_segment)
-        self.language_row = self._build_setting_row(self._t("language"), self.language_segment)
         self.draw_row = self._build_setting_row(self._t("draw_mode"), self.draw_segment)
         self.shape_row = self._build_setting_row(self._t("shape_mode"), self.shape_segment)
         self.blur_row = self._build_setting_row(self._t("blur_style"), self.blur_segment)
-        for row in (self.theme_row, self.language_row, self.draw_row, self.shape_row, self.blur_row):
+        for row in (self.draw_row, self.shape_row, self.blur_row):
             quick_layout.addWidget(row)
         sidebar.addWidget(quick)
 
@@ -1323,8 +1147,6 @@ class MainWindow(QMainWindow):
         self.prev_button.released.connect(self._stop_flip)
         self.next_button.released.connect(self._stop_flip)
         self.settings_button.clicked.connect(self.open_settings)
-        self.theme_segment.changed.connect(lambda value: self._apply_setting("theme_mode", value))
-        self.language_segment.changed.connect(lambda value: self._apply_setting("ui_language", value))
         self.draw_segment.changed.connect(lambda value: self._apply_setting("draw_mode", value))
         self.shape_segment.changed.connect(lambda value: self._apply_setting("shape_mode", value))
         self.blur_segment.changed.connect(lambda value: self._apply_setting("blur_style", value))
@@ -1632,15 +1454,11 @@ class MainWindow(QMainWindow):
         self.prev_button.setText(self._t("prev_btn"))
         self.next_button.setText(self._t("next_btn"))
         self.settings_button.setText(self._t("settings_btn"))
-        self.theme_row.title_label.setText(self._t("theme"))
-        self.language_row.title_label.setText(self._t("language"))
         self.draw_row.title_label.setText(self._t("draw_mode"))
         self.shape_row.title_label.setText(self._t("shape_mode"))
         self.blur_row.title_label.setText(self._t("blur_style"))
         self.save_row.title_label.setText(self._t("save_mode"))
         self.auto_row.title_label.setText(self._t("auto_advance"))
-        self.theme_segment.set_labels(self._theme_options())
-        self.language_segment.set_labels(self._language_options())
         self.draw_segment.set_labels(self._draw_options())
         self.shape_segment.set_labels(self._shape_options())
         self.blur_segment.set_labels(self._blur_options())
@@ -1678,8 +1496,6 @@ class MainWindow(QMainWindow):
             self.sidebar_folder.setText(self._t("folder_not_selected"))
             self.file_label.setText(self._t("current_file", name="-"))
             self.status_label.setText(self._t("status_ready"))
-        self.theme_segment.set_value(self.settings["theme_mode"], emit=False)
-        self.language_segment.set_value(self._lang(), emit=False)
         self.draw_segment.set_value(self.settings["draw_mode"], emit=False)
         self.shape_segment.set_value(self.settings["shape_mode"], emit=False)
         self.blur_segment.set_value(self.settings["blur_style"], emit=False)

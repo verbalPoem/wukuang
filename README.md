@@ -1,11 +1,11 @@
 <div align="center">
   <p>
-    <img alt="Wukuang" height="140px" src="./assets/app-icon.png">
+    <img alt="BlurStudio" height="140px" src="./assets/app-icon.png">
   </p>
 
 [简体中文](./README.md) | [English](./README.en.md)
 
-  <h1>雾框 Wukuang</h1>
+  <h1>BlurStudio</h1>
   <p>面向数据集去敏感、批量图片打码和人工补漏工作流的本地桌面工具</p>
 </div>
 
@@ -37,9 +37,17 @@
 
 ## 最新更新
 
+### v1.1.0
+
+- 全局品牌统一为 `BlurStudio`
+- 设置弹窗精简为低频偏好项，只保留主题与语言，避免和左侧边栏重复
+- 语言切换按钮改为纯国旗样式：`🇨🇳 / 🇺🇸`
+- 顶部前后翻页按钮改为更清晰的 emoji 风格
+- 修复鼠标长按顶部 `A / D` 按钮时无法连续快速浏览的问题
+
 ### v1.0.5
 
-- 新增中英文界面切换，支持 `🇨🇳 ZH / 🇺🇸 EN`
+- 新增中英文界面切换，支持 `🇨🇳 / 🇺🇸`
 - 主界面、设置弹窗、关于弹窗、状态提示支持双语切换
 - 顶部前后翻页按钮改为更明显的 emoji 风格
 - 修复鼠标长按顶部 `A / D` 按钮时无法连续快速浏览的问题
@@ -59,7 +67,7 @@
 
 ## 项目简介
 
-`雾框 Wukuang` 是一个专门为“批量图片去敏感”设计的本地桌面工作台。
+`BlurStudio` 是一个专门为“批量图片去敏感”设计的本地桌面工作台。
 
 它的目标不是替代自动检测模型，而是服务于这样一种真实工作流：
 
@@ -79,7 +87,7 @@
 ## 界面预览
 
 <a href="./assets/app-preview.mp4">
-  <img src="./assets/app-preview-poster.png" width="100%" alt="雾框界面预览视频">
+  <img src="./assets/app-preview-poster.png" width="100%" alt="BlurStudio 界面预览视频">
 </a>
 
 <p align="center"><sub>点击预览图可播放界面演示视频</sub></p>
@@ -101,7 +109,7 @@
 
 很多时候，真正耗时间的不是模型推理，而是模型跑完以后还要人工再补一遍。
 
-`雾框` 就是为这个环节做的：
+`BlurStudio` 就是为这个环节做的：
 
 - 不追求大而全
 - 不让用户做多余操作
@@ -197,7 +205,7 @@ pyinstaller --noconfirm --clean --windowed --icon assets\app-icon.ico --name Blu
 
 ## 文档
 
-- [v1.0.4 开发文档](./docs/Wukuang-v1.0.4-开发文档.md)
+- [v1.1.0 开发文档](./docs/BlurStudio-v1.1.0-开发文档.md)
 - [GitHub Releases](https://github.com/verbalPoem/wukuang/releases)
 
 ## 项目结构
@@ -213,9 +221,9 @@ assets/
 scripts/
   generate_brand_assets.py
 docs/
-  Wukuang-v1.0.4-开发文档.md
+  BlurStudio-v1.1.0-开发文档.md
 face_blur_studio.py
-wukuang_qt.py
+blurstudio_qt.py
 build_exe.bat
 requirements.txt
 README.md

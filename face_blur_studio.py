@@ -1,4 +1,4 @@
-from wukuang_qt import main
+from blurstudio_qt import main
 
 
 if __name__ == "__main__":
